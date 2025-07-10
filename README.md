@@ -1,11 +1,44 @@
-
 # Noderr
-
-**The Node-Based Method That Transforms AI Into a System Architect**
 
 Your AI already knows how to code. Noderr teaches it how to engineer.
 
 ---
+
+## Documentation
+
+- **[Getting Started](./docs/noderr_getting_started.md)** - Complete user guide and first steps
+- **[Understanding Noderr](./docs/understanding-noderr.md)** - Deep dive into concepts and architecture  
+- **[Prompts Guide](./docs/noderr_prompts_guide.md)** - Command reference for all workflows (essential reading!)
+- **[System Guide](./docs/noderr_guide.md)** - Visual roadmap of files and structure
+- **[Installation](./INSTALL.md)** - Detailed setup instructions
+
+## Getting Started
+
+### Prerequisites
+- Any AI assistant that can read/write files (ChatGPT, Claude, Cursor, etc.)
+- Basic familiarity with AI-assisted coding
+- A project (new or existing)
+
+### Installation
+
+1. **Download Noderr**
+   - Download the latest release: [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
+   - Extract the ZIP file into your project directory
+
+2. **Initialize Your Environment** ⚠️ **CRITICAL STEP**
+   - Open `noderr/environment_context.md`
+   - Fill in EVERY section with your specific setup (OS, tools, commands)
+   - **The AI cannot function until this is complete** - it needs to know HOW to work in your environment
+   - This is like giving the AI a driver's license for your system
+
+3. **Start Your First Session**
+   ```
+   You: Use the prompt "NDv1.9__Start_Work_Session.txt"
+   AI: "I've synced with your project. Ready for your PrimaryGoal."
+   
+   You: "Add user authentication"
+   AI: "I'll analyze the impact. Use prompt LOOP_1A to continue..."
+   ```
 
 ## The Noderr Difference
 
@@ -111,34 +144,6 @@ The tracker dashboard shows exactly what's done, what's in progress, and what's 
 | Technical debt accumulates invisibly | Every debt logged → REFACTOR_NodeID tasks auto-scheduled |
 | Documentation drifts from reality | Specs updated to "as-built" state after every change |
 | Each feature built in isolation | Visual architecture ensures system cohesion |
-
-## Getting Started
-
-### Prerequisites
-- Any AI assistant that can read/write files (ChatGPT, Claude, Cursor, etc.)
-- Basic familiarity with AI-assisted coding
-- A project (new or existing)
-
-### Installation
-
-1. **Download Noderr**
-   - Download the latest release: [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
-   - Extract the ZIP file into your project directory
-
-2. **Initialize Your Environment** ⚠️ **CRITICAL STEP**
-   - Open `noderr/environment_context.md`
-   - Fill in EVERY section with your specific setup (OS, tools, commands)
-   - **The AI cannot function until this is complete** - it needs to know HOW to work in your environment
-   - This is like giving the AI a driver's license for your system
-
-3. **Start Your First Session**
-   ```
-   You: Use the prompt "NDv1.9__Start_Work_Session.txt"
-   AI: "I've synced with your project. Ready for your PrimaryGoal."
-   
-   You: "Add user authentication"
-   AI: "I'll analyze the impact. Use prompt LOOP_1A to continue..."
-   ```
 
 ## Critical Concepts You Need to Know
 
@@ -271,14 +276,6 @@ function Settings() { ... }  // New component, doesn't connect
 ```
 
 Without Noderr: AI might just add a password field somewhere and call it done.
-
-## Documentation
-
-- **[Getting Started](./docs/noderr_getting_started.md)** - Complete user guide and first steps
-- **[Understanding Noderr](./docs/understanding-noderr.md)** - Deep dive into concepts and architecture  
-- **[Prompts Guide](./docs/noderr_prompts_guide.md)** - Command reference for all workflows (essential reading!)
-- **[System Guide](./docs/noderr_guide.md)** - Visual roadmap of files and structure
-- **[Installation](./INSTALL.md)** - Detailed setup instructions
 
 ## License
 
