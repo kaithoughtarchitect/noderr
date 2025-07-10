@@ -183,6 +183,7 @@ This isn't just "does it run?" - it's "is it production-ready?"
 Every feature follows this systematic 4-step process:
 
 **Step 1A: Impact Analysis**
+→ Use prompt: `NDv1.9__[LOOP_1A]__Propose_Change_Set.txt`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -190,32 +191,33 @@ AI: "This requires changing:
      - MODIFY: UI_LoginPage (add 'forgot password' link)
      - MODIFY: DB_Users (add reset_token field)"
 ```
-→ Use prompt: `NDv1.9__[LOOP_1A]__Propose_Change_Set.txt`
 
 **Step 1B: Draft Specs**
+→ Use prompt: `NDv1.9__[LOOP_1B]__Draft_Specs.txt`
 - AI marks NodeIDs as Work-In-Progress (WIP)
 - Creates detailed blueprints for every affected NodeID
 - You review the specifications
-→ Use prompt: `NDv1.9__[LOOP_1B]__Draft_Specs.txt`
 
 **Step 2: Implement Change Set**
+→ Use prompt: `NDv1.9__[LOOP_2]__Implement_Change_Set.txt`
 - AI builds ALL NodeIDs in the Change Set together
 - Runs tests and verification
 - Ensures quality gates are met
-→ Use prompt: `NDv1.9__[LOOP_2]__Implement_Change_Set.txt`
 
 **Step 3: Finalize & Commit**
+→ Use prompt: `NDv1.9__[LOOP_3]__Finalize_And_Commit.txt`
 - Updates all specs to match what was built
 - Logs decisions and discoveries
 - Creates a clean git commit
-→ Use prompt: `NDv1.9__[LOOP_3]__Finalize_And_Commit.txt`
 
 ## The Noderr Loop in Action
 
 ```
 You: "Add password reset" 
          ↓
-1A. 🔍 AI analyzes impact → "This affects UI_LoginPage, API_ResetPassword, DB_Users, SVC_EmailService"
+1A. 🔍 AI analyzes impact → "This requires:
+                            - NEW: UI_ResetForm, API_ResetPassword, SVC_EmailService  
+                            - MODIFY: UI_LoginPage, DB_Users"
     You: "Approved" ✓
          ↓
 1B. 📋 AI drafts blueprints → Creates specs for each NodeID
