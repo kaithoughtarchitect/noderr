@@ -25,7 +25,7 @@ These are the commands you'll use to manage the project's lifecycle outside of t
 
 | Category | Prompt | When to Use |
 | :--- | :--- | :--- |
-| **Setup** | `ND__Setup_New_Project.md` | Once, to initialize a fresh Noderr project from scratch. |
+| **Setup** | `ND__Install_And_Reconcile.md` | Once, after initial build and ZIP extraction |
 | **Session** | `ND__Start_Work_Session.md` | At the beginning of every work session to sync the agent. |
 | **Quick Fix** | `ND__Execute_Micro_Fix.md` | For tiny, localized fixes (< 50 lines) that don't require the full loop. |
 | **Bugs** | `ND__Handle_Critical_Issue.md` | When something is broken. Guides a formal triage and diagnosis process. |
@@ -62,7 +62,7 @@ These prompts are for setting up and verifying projects, or for performing deep 
 
 ## Quick Decision Tree
 
-*   **Starting a brand new project?** → `Setup_New_Project`
+*   **Just built initial prototype?** → Extract ZIP → `Install_And_Reconcile`
 *   **Starting your work day?** → `Start_Work_Session`
 *   **Have a new feature idea?** → `Pre_Flight_Feature_Analysis` → (then start the 4-step loop)
 *   **Found a small typo?** → `Execute_Micro_Fix`
