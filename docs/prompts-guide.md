@@ -21,7 +21,15 @@ This four-step sequence is the heart of Noderr. You use these prompts in order f
 
 ## Workflow & Maintenance Prompts
 
-These are the commands you'll use to manage the project's lifecycle outside of the core feature loop.
+These are the commands you'll use to manage the project's lifecycle.
+
+### Initial Setup
+| Prompt | Purpose | When to Use |
+|:-------|:--------|:------------|
+| `ND__Strategic_Blueprint_Designer.md` | Create strategic foundation | Before building, to establish rich context |
+| `ND__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
+
+### Daily Operations
 
 | Category | Prompt | When to Use |
 | :--- | :--- | :--- |
@@ -39,6 +47,7 @@ Use these high-level prompts to manage the project's long-term roadmap and healt
 
 | Category | Prompt | When to Use |
 | :--- | :--- | :--- |
+| **Blueprint** | `ND__Strategic_Blueprint_Designer.md` | To create rich strategic context before project setup |
 | **Ideation** | `ND__Feature_Idea_Breakdown.md` | To turn a raw list of ideas into a prioritized, structured plan. |
 | **Planning** | `ND__Pre_Flight_Feature_Analysis.md`| To perform a detailed analysis of a single feature *before* starting the loop. |
 | **Expansion**| `ND__Major_Mid_Project_Feature_Addition.md`| To add a major new feature to a project that is already in progress. |
@@ -62,6 +71,7 @@ These prompts are for setting up and verifying projects, or for performing deep 
 
 ## Quick Decision Tree
 
+*   **Starting a new project?** → `Strategic_Blueprint_Designer` → Create project files → Build → Install
 *   **Just built initial prototype?** → Extract ZIP → `Install_And_Reconcile`
 *   **Starting your work day?** → `Start_Work_Session`
 *   **Have a new feature idea?** → `Pre_Flight_Feature_Analysis` → (then start the 4-step loop)
