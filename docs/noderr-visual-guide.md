@@ -164,9 +164,9 @@ graph LR
 ```
 
 **Phase 1: Genesis (New Project)**
-1.  **`ND__Setup_New_Project.md`** → Agent creates the entire Noderr file structure.
-2.  **You fill out `environment_context.md`** → You tell the agent *how* to work.
-3.  **`ND__Project_Generator.md` & `ND__Architecture_Generator.md`** → Agent defines the project's vision and blueprint based on your idea.
+1.  **Prepare your vision** → Create blueprint, project overview, and architecture
+2.  **Build initial prototype** → AI creates the first version
+3.  **`ND__Install_And_Reconcile.md`** → Install Noderr and reconcile with actual build
 
 **Phase 2: Development (The Loop)**
 1.  **`ND__Start_Work_Session.md`** → Agent syncs up and is ready for a `PrimaryGoal`.
