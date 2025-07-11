@@ -1,5 +1,7 @@
 # Understanding Noderr: The Node-Based AI Coding System
 
+## What Makes Noderr Different
+
 ### 1. Building Blocks with Identity (NodeIDs)
 
 Every piece of your system gets a unique, permanent name - we call these **NodeIDs**:
@@ -175,7 +177,7 @@ The Loop is how your AI transforms from a chaotic coder into a systematic engine
 
 #### 🚀 Starting Every Session
 
-**Always Begin With:** `NDv1.9__Start_Work_Session.txt`
+**Always Begin With:** `ND__Start_Work_Session.md`
 - AI reads the log (what happened before)
 - Checks the tracker (what's the current state)
 - Proposes the next logical task
@@ -184,7 +186,7 @@ The Loop is how your AI transforms from a chaotic coder into a systematic engine
 #### 🔄 The 4-Step Loop
 
 **Step 1A: Impact Analysis** 
-*Prompt:* `NDv1.9__[LOOP_1A]__Propose_Change_Set.txt`
+*Prompt:* `ND__[LOOP_1A]__Propose_Change_Set.md`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -195,14 +197,14 @@ AI: "This requires changing:
 **⏸️ PAUSES** - You approve the full scope
 
 **Step 1B: Blueprint Creation**
-*Prompt:* `NDv1.9__[LOOP_1B]__Draft_Specs.txt`
+*Prompt:* `ND__[LOOP_1B]__Draft_Specs.md`
 - AI marks everything as Work-In-Progress
 - Creates detailed specs for EVERY piece
 - Not just "what" but "how" and "why"
 **⏸️ PAUSES** - You review the blueprints
 
 **Step 2: Build Everything**
-*Prompt:* `NDv1.9__[LOOP_2]__Implement_Change_Set.txt`
+*Prompt:* `ND__[LOOP_2]__Implement_Change_Set.md`
 
 This is where the magic happens:
 1. **Context Assembly** - AI reads only what it needs:
@@ -225,7 +227,7 @@ This is where the magic happens:
 **⏸️ PAUSES** - You authorize finalization
 
 **Step 3: Document & Commit**
-*Prompt:* `NDv1.9__[LOOP_3]__Finalize_And_Commit.txt`
+*Prompt:* `ND__[LOOP_3]__Finalize_And_Commit.md`
 - Updates specs to match what was built
 - Logs all decisions and discoveries
 - Creates REFACTOR_ tasks for any debt
@@ -442,11 +444,10 @@ This file has three roles:
 
 #### How It Works
 
-1. **You give the template to AI** → "Here's environment_context.md"
-2. **AI reads the instructions** → Understands it needs to test and document
-3. **AI runs discovery** → Tests every command in the actual environment
-4. **AI creates filled version** → `environment_context_replit_nodejs.md`
-5. **AI uses it forever** → Now knows exactly how to work in your setup
+1. **During installation** → The AI reads the template instructions
+2. **AI runs discovery** → Tests every command in the actual environment
+3. **AI creates filled version** → `environment_context_replit_nodejs.md`
+4. **AI uses it forever** → Now knows exactly how to work in your setup
 
 #### What Gets Documented
 
@@ -500,11 +501,11 @@ verification:
 
 The same Noderr Loop works perfectly in both environments!
 
-#### The First Critical Step
+#### The Critical Step
 
-This is why filling out `environment_context.md` is the FIRST thing you do - without it, the AI is like a skilled builder arriving at a job site without knowing whether they're in New York or Tokyo. Different places have different tools, different rules, different ways of doing things.
+This is why filling out `environment_context.md` is critical during installation - without it, the AI is like a skilled builder arriving at a job site without knowing whether they're in New York or Tokyo. Different places have different tools, different rules, different ways of doing things.
 
-This isn't overengineering - it's acknowledging the messy reality that every development environment is unique. By documenting it once, you prevent countless failed commands and confused debugging sessions.
+This isn't overengineering - it's acknowledging the messy reality that every development environment is unique. By documenting it once during the installation process, you prevent countless failed commands and confused debugging sessions.
 
 ### 11. The Project Constitution (noderr_project.md) - Your Living PRD
 
@@ -655,7 +656,7 @@ These documents contain:
 
 **Step 1: Raw Ideas → Structured Analysis**
 
-You use: `NDv1.9__Feature_Idea_Breakdown.txt`
+You use: `ND__Feature_Idea_Breakdown.md`
 
 ```
 You: "Here are my ideas:
@@ -724,8 +725,8 @@ Start with API Rate Limiting - high security impact, low effort.
 
 #### Other Planning Prompts
 
-- **`NDv1.9__Pre_Flight_Feature_Analysis.txt`** - Deep dive into ONE specific feature before building
-- **`NDv1.9__Major_Mid_Project_Feature_Addition.txt`** - When adding big features to existing projects
+- **`ND__Pre_Flight_Feature_Analysis.md`** - Deep dive into ONE specific feature before building
+- **`ND__Major_Mid_Project_Feature_Addition.md`** - When adding big features to existing projects
 
 #### Why Planning Matters
 
