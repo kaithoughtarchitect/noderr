@@ -6,43 +6,33 @@ Your AI already knows how to code. Noderr teaches it how to engineer.
 
 ## Documentation
 
-- **[Getting Started](./docs/noderr_getting_started.md)** - Complete user guide and first steps
+- **[Getting Started](./docs/getting-started.md)** - Complete user guide and first steps
 - **[Understanding Noderr](./docs/understanding-noderr.md)** - Deep dive into concepts and architecture  
-- **[Prompts Guide](./docs/noderr_prompts_guide.md)** - Command reference for all workflows (essential reading!)
-- **[System Guide](./docs/noderr_guide.md)** - Visual roadmap of files and structure
-- **[Installation](./INSTALL.md)** - Detailed setup instructions
+- **[Prompts Guide](./docs/noderr-prompts-guide.md)** - Command reference for all workflows
+- **[Visual Guide](./docs/noderr-visual-guide.md)** - Visual roadmap of files and structure
+- **[Installation](./INSTALL.md)** - Quick setup instructions
 
-## Getting Started
+## What is Noderr?
+
+Noderr gives AI what every senior developer has: **permanent memory** and **system understanding**.
+
+### Quick Start
+
+1. **Prepare Your Vision** - Create blueprint, project overview, and architecture documents
+2. **Build Initial Prototype** - AI creates your first version based on the plans
+3. **Install Noderr** - Extract framework and reconcile with what was built
+4. **Develop Systematically** - Use the Noderr loop for all future development
+
+*Noderr documents what you ACTUALLY built, not just what you planned.*
 
 ### Prerequisites
 - Any AI assistant that can read/write files (ChatGPT, Claude, Cursor, etc.)
 - Basic familiarity with AI-assisted coding
-- A project (new or existing)
+- A project idea (new or existing)
 
-### Installation
-
-1. **Download Noderr**
-   - Download the latest release: [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
-   - Extract the ZIP file into your project directory
-
-2. **Initialize Your Environment** ⚠️ **CRITICAL STEP**
-   - Open `noderr/environment_context.md`
-   - Fill in EVERY section with your specific setup (OS, tools, commands)
-   - **The AI cannot function until this is complete** - it needs to know HOW to work in your environment
-   - This is like giving the AI a driver's license for your system
-
-3. **Start Your First Session**
-   ```
-   You: Use the prompt "NDv1.9__Start_Work_Session.txt"
-   AI: "I've synced with your project. Ready for your PrimaryGoal."
-   
-   You: "Add user authentication"
-   AI: "I'll analyze the impact. Use prompt LOOP_1A to continue..."
-   ```
+---
 
 ## The Noderr Difference
-
-Noderr gives AI what every senior developer has: **permanent memory** and **system understanding**.
 
 ### 1. Building Blocks with Identity (NodeIDs)
 
@@ -113,6 +103,8 @@ Every significant action is permanently recorded:
 
 The AI can answer "Why does this code look weird?" with "According to the log, we had to work around a third-party API limitation on Jan 15."
 
+---
+
 ## Core Concepts in 30 Seconds
 
 ### 🏷️ **NodeIDs - Permanent Identity**
@@ -130,6 +122,8 @@ Each NodeID has a detailed blueprint (spec) that evolves from plan → built →
 ### 📊 **Real-Time Mission Control**
 The tracker dashboard shows exactly what's done, what's in progress, and what's blocked - with WorkGroupIDs that track related changes together.
 
+---
+
 ## How is Noderr Different?
 
 | Traditional AI Coding | Noderr |
@@ -145,45 +139,14 @@ The tracker dashboard shows exactly what's done, what's in progress, and what's 
 | Documentation drifts from reality | Specs updated to "as-built" state after every change |
 | Each feature built in isolation | Visual architecture ensures system cohesion |
 
-## Critical Concepts You Need to Know
-
-### The Environment Context (Your AI's Driver's License)
-**This is CRITICAL**: The AI cannot function without `environment_context.md` being filled out. This file teaches the AI:
-- What commands to use on YOUR system (npm vs yarn, python vs python3)
-- How to run tests in YOUR setup
-- Where YOUR database lives
-- How to commit code in YOUR environment
-
-Think of it as the AI's driver's license - without it, the AI knows WHAT to do but not HOW to do it on your machine.
-
-### The Prompts System (Your Control Panel)
-You don't just chat with the AI. You use specific prompt files to trigger each phase:
-```
-NDv1.9__Start_Work_Session.txt         → Begin work
-NDv1.9__[LOOP_1A]__Propose_Change_Set.txt → Start a feature
-NDv1.9__[LOOP_1B]__Draft_Specs.txt    → Review specs
-NDv1.9__[LOOP_2]__Implement_Change_Set.txt → Build it
-NDv1.9__[LOOP_3]__Finalize_And_Commit.txt → Finish up
-```
-
-Each prompt ensures the AI follows the exact methodology, every time.
-
-### ARC Verification (Quality Gates)
-**A**ttentive **R**eview & **C**ompliance - Before marking any NodeID as complete, the AI verifies:
-- All tests pass
-- Code meets security standards
-- Performance is acceptable
-- Error handling is robust
-- Documentation matches reality
-
-This isn't just "does it run?" - it's "is it production-ready?"
+---
 
 ## The Noderr Loop
 
 Every feature follows this systematic 4-step process:
 
 **Step 1A: Impact Analysis**
-→ Use prompt: `NDv1.9__[LOOP_1A]__Propose_Change_Set.txt`
+→ Use prompt: `ND__[LOOP_1A]__Propose_Change_Set.md`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -193,44 +156,41 @@ AI: "This requires changing:
 ```
 
 **Step 1B: Draft Specs**
-→ Use prompt: `NDv1.9__[LOOP_1B]__Draft_Specs.txt`
+→ Use prompt: `ND__[LOOP_1B]__Draft_Specs.md`
 - AI marks NodeIDs as Work-In-Progress (WIP)
 - Creates detailed blueprints for every affected NodeID
 - You review the specifications
 
 **Step 2: Implement Change Set**
-→ Use prompt: `NDv1.9__[LOOP_2]__Implement_Change_Set.txt`
+→ Use prompt: `ND__[LOOP_2]__Implement_Change_Set.md`
 - AI builds ALL NodeIDs in the Change Set together
 - Runs tests and verification
 - Ensures quality gates are met
 
 **Step 3: Finalize & Commit**
-→ Use prompt: `NDv1.9__[LOOP_3]__Finalize_And_Commit.txt`
+→ Use prompt: `ND__[LOOP_3]__Finalize_And_Commit.md`
 - Updates all specs to match what was built
 - Logs decisions and discoveries
 - Creates a clean git commit
 
-## The Noderr Loop in Action
+---
 
-```
-You: "Add password reset" 
-         ↓
-1A. 🔍 AI analyzes impact → "This requires:
-                            - NEW: UI_ResetForm, API_ResetPassword, SVC_EmailService  
-                            - MODIFY: UI_LoginPage, DB_Users"
-    You: "Approved" ✓
-         ↓
-1B. 📋 AI drafts blueprints → Creates specs for each NodeID
-    You: Review specs → "Looks good" ✓
-         ↓
-2.  🔨 AI implements everything → Builds all NodeIDs together, runs tests
-         ↓
-3.  📝 AI finalizes → Updates specs to match code, logs decisions, commits
-         ↓
-🎉 Complete feature with perfect memory for next session
-```
+## Installation & Setup
 
-**The Reality**: You guide AI through structured gates, ensuring quality at each step.
+### The Noderr Approach
+
+Unlike traditional tools, Noderr is installed AFTER you build your initial prototype. This ensures it documents what actually exists, not just what was planned.
+
+### Quick Install
+
+1. **Prepare your vision** (blueprint, project overview, architecture)
+2. **Build initial prototype** with AI based on those plans
+3. **Download & add Noderr** - [Get noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
+4. **Run Install prompt** - `ND__Install_And_Reconcile.md`
+
+See [Getting Started](./docs/getting-started.md) for detailed instructions.
+
+---
 
 ## What Gets Created
 
@@ -246,6 +206,8 @@ your-project/
 ├── 📁 planning/                  # Feature analysis docs
 └── 📄 environment_context.md     # Your environment setup
 ```
+
+---
 
 ## Real Example
 
@@ -264,7 +226,7 @@ function Settings() { ... }  // New component, doesn't connect
 **With Noderr:**
 ```javascript
 // Monday: "Add user profile"
-// You: Use prompt "NDv1.9__[LOOP_1A]__Propose_Change_Set.txt"
+// You: Use prompt "ND__[LOOP_1A]__Propose_Change_Set.md"
 // AI: "Creating UI_UserProfile (NodeID), updating UI_Navigation to include 
 //      profile link, adding API_GetProfile endpoint. All connected in architecture."
 
@@ -277,11 +239,42 @@ function Settings() { ... }  // New component, doesn't connect
 //      Just need to update UI_UserProfile render method. One-line change."
 ```
 
-Without Noderr: AI might just add a password field somewhere and call it done.
+---
+
+## Critical Concepts
+
+### The Environment Context
+The AI cannot function without `environment_context.md` being configured. This file teaches the AI:
+- What commands to use on YOUR system (npm vs yarn, python vs python3)
+- How to run tests in YOUR setup
+- Where YOUR database lives
+- How to commit code in YOUR environment
+
+### The Prompts System
+You don't just chat with the AI. You use specific prompt files to trigger each phase:
+```
+ND__Start_Work_Session.md         → Begin work
+ND__[LOOP_1A]__Propose_Change_Set.md → Start a feature
+ND__[LOOP_1B]__Draft_Specs.md    → Review specs
+ND__[LOOP_2]__Implement_Change_Set.md → Build it
+ND__[LOOP_3]__Finalize_And_Commit.md → Finish up
+```
+
+### ARC Verification
+**A**ttentive **R**eview & **C**ompliance - Before marking any NodeID as complete, the AI verifies:
+- All tests pass
+- Code meets security standards
+- Performance is acceptable
+- Error handling is robust
+- Documentation matches reality
+
+---
 
 ## License
 
 MIT License - Use freely in your projects
+
+---
 
 ## The Bottom Line
 
