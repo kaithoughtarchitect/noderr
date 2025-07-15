@@ -23,30 +23,26 @@ Extract the ZIP and add the `noderr` folder to your project:
 That's it! You now have the Noderr framework in your project.
 
 ### 3. Run Install and Reconcile
-
 Give your AI assistant this prompt:
 ```
 ND__Install_And_Reconcile.md
 ```
 
-This will:
-1. Analyze what was actually built vs. your original plans
-2. Update all Noderr files to match reality
-3. **Pause for your review** of the updated project files
-4. Create specifications for all components (after approval)
-5. Configure your development environment
-6. Set up the tracking system
+### 4. Run System Audit
+Verify everything is ready:
+```
+ND__Post_Installation_Audit.md
+```
+This ensures 100% architectural completeness and system readiness.
 
-### 4. Review and Approve
-
+### 5. Review and Approve
 When the AI pauses:
-- Review `noderr/noderr_project.md` - Does it accurately reflect what was built?
-- Review `noderr/noderr_architecture.md` - Does the diagram match your system?
-- Approve to continue with specification generation
+- Review audit report for any issues
+- Address any critical gaps identified
+- Confirm development readiness percentage
 
 ## Post-Installation
-
-Once installation is complete, start development:
+Once audit shows 100% readiness:
 ```
 ND__Start_Work_Session.md
 ```
