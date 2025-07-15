@@ -28,7 +28,7 @@ These are the commands you'll use to manage the project's lifecycle.
 |:-------|:--------|:------------|
 | `ND__Strategic_Blueprint_Designer.md` | Create strategic foundation | Before building, to establish rich context |
 | `ND__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
-| `ND__Post_Installation_Audit.md` | **NEW** - Verify system integrity and complete architecture | Immediately after Install_And_Reconcile |
+| `ND__Post_Installation_Audit.md` | Verify system integrity and complete architecture | Immediately after Install_And_Reconcile |
 
 ### Daily Operations
 
