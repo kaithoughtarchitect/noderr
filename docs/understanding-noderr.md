@@ -24,9 +24,282 @@ These NodeIDs aren't just labels - they live in a visual map (Mermaid diagram) t
 
 ```mermaid
 graph TD
-    UI_LoginForm --> API_AuthCheck
-    API_AuthCheck --> SVC_TokenValidator
-    SVC_TokenValidator --> DB_Users
+    %% --- Legend ---
+    subgraph Legend
+        direction LR
+        L_DescFmt["Node Label"]:::./specs/NodeID.md --- L_FmtLbl(Link Format: :::./specs/NodeID.md)
+        L_IDConv(NodeID Convention: COMPONENT_Name, e.g., UI_LoginForm)
+        
+        L_UI[/UI Component/] --- L_UIDesc(Frontend interfaces)
+        L_BE([Backend Process]) --- L_BEDesc(Server-side functionality)
+        L_DB[(Database Operation)] --- L_DBDesc(Database interactions)
+        L_API{{API Endpoint}} --- L_APIDesc(Express API routes)
+        L_Decision{Decision Point} --- L_DecDesc(Conditional logic)
+        L_State[("State Management")] --- L_StateDesc(Client-side state)
+    end
+
+    %% --- Entry Point ---
+    APP_Entry((Application Entry)):::./specs/APP_Entry.md --> AUTH_Check{Is User Authenticated?}:::./specs/AUTH_Check.md
+    
+    %% --- Authentication Flow ---
+    subgraph Authentication
+        direction TB
+        AUTH_Check -->|No| UI_AuthPage[/Authentication Page/]:::./specs/UI_AuthPage.md
+        UI_AuthPage -->|Toggle| UI_LoginForm[/Login Form/]:::./specs/UI_LoginForm.md
+        UI_AuthPage -->|Toggle| UI_RegisterForm[/Register Form/]:::./specs/UI_RegisterForm.md
+        
+        UI_LoginForm -->|Submit| API_Login{{Login API}}:::./specs/API_Login.md
+        UI_RegisterForm -->|Submit| API_Register{{Register API}}:::./specs/API_Register.md
+        
+        API_Login --> BE_Authenticate([Authenticate Credentials]):::./specs/BE_Authenticate.md
+        API_Register --> BE_CreateUser([Create User Account]):::./specs/BE_CreateUser.md
+        
+        BE_Authenticate --> DB_GetUser[(Fetch User)]:::./specs/DB_GetUser.md
+        BE_CreateUser --> DB_InsertUser[(Insert New User)]:::./specs/DB_InsertUser.md
+        
+        DB_GetUser -->|Valid| BE_CreateSession([Create User Session]):::./specs/BE_CreateSession.md
+        DB_GetUser -->|Invalid| UI_AuthError[/Authentication Error/]:::./specs/UI_AuthError.md
+        DB_InsertUser --> BE_CreateSession
+        
+        BE_CreateSession --> AUTH_Check
+        UI_AuthError --> UI_LoginForm
+    end
+    
+    %% --- Main Application Flow ---
+    AUTH_Check -->|Yes| UI_HomePage[/Home Page/]:::./specs/UI_HomePage.md
+    UI_HomePage --> STATE_Init[("Initialize Application State")]:::./specs/STATE_Init.md
+    STATE_Init --> API_GetUserUIState{{Get User UI State API}}:::./specs/API_GetUserUIState.md
+    API_GetUserUIState --> BE_LoadUIState([Load UI State])
+    BE_LoadUIState --> DB_GetUserUIState[(Get User UI State)]
+    DB_GetUserUIState -->|State Data| STATE_Init
+
+    %% --- Project Management ---
+    subgraph Project Management
+        direction TB
+        STATE_Init --> UI_Sidebar[/Sidebar Navigation/]:::./specs/UI_Sidebar.md
+        UI_Sidebar --> UI_ProjectList[/Project List/]:::./specs/UI_ProjectList.md
+        UI_Sidebar --> UI_CollapseAllProjects[/Collapse All Button/]:::./specs/UI_CollapseAllProjects.md
+        UI_CollapseAllProjects --> UI_ProjectList
+        UI_ProjectList -->|Create| UI_CreateProject[/Create Project Modal/]:::./specs/UI_CreateProject.md
+        UI_ProjectList -->|Select| STATE_SelectProject[("Select Project")]:::./specs/STATE_SelectProject.md
+        UI_ProjectList -->|Edit| UI_EditProject[/Edit Project Modal/]:::./specs/UI_EditProject.md
+        UI_ProjectList -->|Delete| UI_DeleteProject[/Delete Project Confirm/]:::./specs/UI_DeleteProject.md
+        UI_ProjectList -->|Expand/Collapse| API_UpdateUserUIState{{Update User UI State API}}:::./specs/API_UpdateUserUIState.md
+        
+        UI_CreateProject -->|Submit| API_CreateProject{{Create Project API}}:::./specs/API_CreateProject.md
+        UI_EditProject -->|Submit| API_UpdateProject{{Update Project API}}:::./specs/API_UpdateProject.md
+        UI_DeleteProject -->|Confirm| API_DeleteProject{{Delete Project API}}:::./specs/API_DeleteProject.md
+        
+        API_CreateProject --> DB_InsertProject[(Insert Project)]:::./specs/DB_InsertProject.md
+        API_UpdateProject --> DB_UpdateProject[(Update Project)]:::./specs/DB_UpdateProject.md
+        API_DeleteProject --> DB_DeleteProject[(Delete Project)]:::./specs/DB_DeleteProject.md
+        
+        DB_InsertProject --> UI_ProjectList
+        DB_UpdateProject --> UI_ProjectList
+        DB_DeleteProject --> UI_ProjectList
+    end
+    
+    %% --- Prompt Management ---
+    subgraph Prompt Management
+        direction TB
+        STATE_SelectProject --> UI_PromptList[/Prompt List/]:::./specs/UI_PromptList.md
+        UI_PromptList --> UI_PromptTabs[/Prompt Tabs/]:::./specs/UI_PromptTabs.md
+        UI_PromptTabs -->|Open/Close Tab| API_UpdateUserUIState
+        UI_PromptTabs -->|Reorder Tabs| FEAT_TabReordering[/Tab Reordering/]:::./specs/FEAT_TabReordering.md
+        FEAT_TabReordering --> API_UpdateUserUIState
+        
+        UI_PromptList -->|Create| UI_CreatePrompt[/Create Prompt Modal/]:::./specs/UI_CreatePrompt.md
+        UI_PromptList -->|Select| STATE_SelectPrompt[("Select Prompt")]:::./specs/STATE_SelectPrompt.md
+        UI_PromptList -->|Edit| UI_RenamePrompt[/Rename Prompt Modal/]:::./specs/UI_RenamePrompt.md
+        UI_PromptList -->|Delete| UI_DeletePrompt[/Delete Prompt Confirm/]:::./specs/UI_DeletePrompt.md
+        UI_PromptList -->|Convert| FEAT_ResourceConversion[/Convert Prompt to Resource/]:::./specs/FEAT_ResourceConversion.md
+        UI_PromptList -->|Reorder| FEAT_PromptReordering[/Prompt Reordering/]:::./specs/FEAT_PromptReordering.md
+        FEAT_PromptReordering --> API_UpdateUserUIState
+        
+        UI_CreatePrompt -->|Submit| API_CreatePrompt{{Create Prompt API}}:::./specs/API_CreatePrompt.md
+        UI_RenamePrompt -->|Submit| API_UpdatePrompt{{Update Prompt API}}:::./specs/API_UpdatePrompt.md
+        UI_DeletePrompt -->|Confirm| API_DeletePrompt{{Delete Prompt API}}:::./specs/API_DeletePrompt.md
+        
+        API_CreatePrompt --> DB_InsertPrompt[(Insert Prompt)]:::./specs/DB_InsertPrompt.md
+        API_UpdatePrompt --> DB_UpdatePrompt[(Update Prompt)]:::./specs/DB_UpdatePrompt.md
+        API_DeletePrompt --> DB_DeletePrompt[(Delete Prompt)]:::./specs/DB_DeletePrompt.md
+        
+        DB_InsertPrompt --> UI_PromptList
+        DB_UpdatePrompt --> UI_PromptList
+        DB_DeletePrompt --> UI_PromptList
+    end
+    
+    %% --- Resource Management ---
+    subgraph Resource Management
+        direction TB
+        STATE_SelectProject --> UI_ResourceList[/Resource List/]:::./specs/UI_ResourceList.md
+        
+        UI_ResourceList -->|Upload| UI_UploadResource[/Upload Resource Dialog/]:::./specs/UI_UploadResource.md
+        UI_ResourceList -->|Delete| UI_DeleteResource[/Delete Resource Confirm/]:::./specs/UI_DeleteResource.md
+        UI_ResourceList -->|Convert| FEAT_ResourceConversion[/Convert Resource to Prompt/]:::./specs/FEAT_ResourceConversion.md
+        
+        UI_UploadResource -->|Submit| API_UploadResource{{Upload Resource API}}:::./specs/API_UploadResource.md
+        UI_DeleteResource -->|Confirm| API_DeleteResource{{Delete Resource API}}:::./specs/API_DeleteResource.md
+        
+        API_UploadResource --> DB_InsertResource[(Insert Resource)]:::./specs/DB_InsertResource.md
+        API_DeleteResource --> DB_DeleteResource[(Delete Resource)]:::./specs/DB_DeleteResource.md
+        
+        DB_InsertResource --> UI_ResourceList
+        DB_DeleteResource --> UI_ResourceList
+        
+        %% Resource Conversion 
+        FEAT_ResourceConversion -->|To Prompt| API_ConvertResource{{Convert Resource API}}:::./specs/API_ConvertResource.md
+        FEAT_ResourceConversion -->|To Resource| API_ConvertPrompt{{Convert Prompt API}}:::./specs/API_ConvertPrompt.md
+        
+        API_ConvertResource --> DB_ConvertResource[(Convert Resource to Prompt)]:::./specs/DB_ConvertResource.md
+        API_ConvertPrompt --> DB_ConvertPrompt[(Convert Prompt to Resource)]:::./specs/DB_ConvertPrompt.md
+        
+        DB_ConvertResource --> UI_PromptList
+        DB_ConvertPrompt --> UI_ResourceList
+    end
+    
+    %% --- Prompt Editor and Version History ---
+    subgraph Prompt Editing
+        direction TB
+        STATE_SelectPrompt --> UI_PromptEditor[/Prompt Editor/]:::./specs/UI_PromptEditor.md
+        UI_PromptEditor -->|Save| API_SavePrompt{{Save Prompt API}}:::./specs/API_SavePrompt.md
+        UI_PromptEditor -->|View History| UI_VersionHistoryToggle[/Version History Toggle/]:::./specs/UI_VersionHistoryToggle.md
+        UI_PromptEditor -->|Toggle Fullscreen| UI_FullscreenToggle[/Fullscreen Toggle/]:::./specs/UI_FullscreenToggle.md
+        
+        UI_VersionHistoryToggle -->|Toggle| STATE_VersionHistoryVisible[("Version History Visibility")]:::./specs/STATE_VersionHistoryVisible.md
+        STATE_VersionHistoryVisible -->|Visible| UI_VersionHistory[/Version History Panel/]:::./specs/UI_VersionHistory.md
+        
+        UI_FullscreenToggle -->|Toggle| STATE_FullscreenMode[("Fullscreen Mode")]:::./specs/STATE_FullscreenMode.md
+        STATE_FullscreenMode -->|Enabled| UI_FullscreenEditor[/Fullscreen Editor View/]:::./specs/UI_FullscreenEditor.md
+        UI_FullscreenEditor -->|Exit| UI_ExitFullscreen[/Exit Fullscreen Button/]:::./specs/UI_ExitFullscreen.md
+        UI_ExitFullscreen --> STATE_FullscreenMode
+        
+        API_SavePrompt --> DB_UpdatePromptContent[(Update Prompt Content)]:::./specs/DB_UpdatePromptContent.md
+        API_SavePrompt --> DB_CreateVersion[(Create Version)]:::./specs/DB_CreateVersion.md
+        
+        UI_VersionHistory -->|View Version| STATE_SelectVersion[("Select Version")]:::./specs/STATE_SelectVersion.md
+        UI_VersionHistory -->|Delete Version| UI_DeleteVersion[/Delete Version Confirm/]:::./specs/UI_DeleteVersion.md
+        
+        STATE_SelectVersion --> UI_PromptEditor
+        UI_DeleteVersion -->|Confirm| API_DeleteVersion{{Delete Version API}}:::./specs/API_DeleteVersion.md
+        
+        API_DeleteVersion --> DB_DeleteVersion[(Delete Version)]:::./specs/DB_DeleteVersion.md
+        DB_DeleteVersion --> UI_VersionHistory
+    end
+    
+    %% --- Search Functionality ---
+    subgraph Search
+        direction TB
+        UI_HomePage --> UI_SearchBar[/Search Bar/]:::./specs/UI_SearchBar.md
+        UI_SearchBar -->|Query| API_Search{{Search API}}:::./specs/API_Search.md
+        API_Search --> DB_Search[(Search Database)]:::./specs/DB_Search.md
+        DB_Search --> UI_SearchResults[/Search Results/]:::./specs/UI_SearchResults.md
+        UI_SearchResults -->|Select Project| STATE_SelectProject
+        UI_SearchResults -->|Select Prompt| STATE_SelectPrompt
+    end
+    
+    %% --- General Notes Management ---
+    subgraph General Notes
+        direction TB
+        UI_HomePage -->|Navigate| UI_NotesDashboard[/Notes Dashboard/]:::./specs/UI_NotesDashboard.md
+        UI_NotesDashboard -->|Create Note| API_CreateGeneralNote{{Create General Note API}}:::./specs/API_GeneralNotes.md
+        UI_NotesDashboard -->|Edit Note| API_UpdateGeneralNote{{Update General Note API}}:::./specs/API_GeneralNotes.md
+        UI_NotesDashboard -->|Delete Note| API_DeleteGeneralNote{{Delete General Note API}}:::./specs/API_GeneralNotes.md
+        UI_NotesDashboard -->|Load Notes| API_GetGeneralNotes{{Get General Notes API}}:::./specs/API_GeneralNotes.md
+        
+        API_CreateGeneralNote --> DB_InsertGeneralNote[(Insert General Note)]:::./specs/DB_Table_GeneralNotes.md
+        API_UpdateGeneralNote --> DB_UpdateGeneralNote[(Update General Note)]:::./specs/DB_Table_GeneralNotes.md
+        API_DeleteGeneralNote --> DB_DeleteGeneralNote[(Delete General Note)]:::./specs/DB_Table_GeneralNotes.md
+        API_GetGeneralNotes --> DB_GetGeneralNotes[(Get General Notes)]:::./specs/DB_Table_GeneralNotes.md
+        
+        DB_InsertGeneralNote --> UI_NotesDashboard
+        DB_UpdateGeneralNote --> UI_NotesDashboard
+        DB_DeleteGeneralNote --> UI_NotesDashboard
+        DB_GetGeneralNotes --> UI_NotesDashboard
+    end
+
+    %% --- Theme Management ---
+    subgraph Theme
+        direction LR
+        UI_HomePage --> UI_ThemeToggle[/Theme Toggle/]:::./specs/UI_ThemeToggle.md
+        UI_ThemeToggle -->|Switch| STATE_ToggleTheme[("Update Theme")]:::./specs/STATE_ToggleTheme.md
+        STATE_ToggleTheme -->|Apply| UI_ThemeApply[/Apply Theme Classes/]:::./specs/UI_ThemeApply.md
+    end
+    
+    %% --- UI State Persistence Service (New Subgraph) ---
+    subgraph UI State Persistence
+        direction TB
+        API_GetUserUIState --> BE_LoadUIState([Load UI State]):::./specs/BE_LoadUIState.md
+        API_UpdateUserUIState --> BE_SaveUIState([Save UI State]):::./specs/BE_SaveUIState.md
+        BE_LoadUIState --> DB_GetUserUIState[(Get User UI State)]:::./specs/DB_GetUserUIState.md
+        BE_SaveUIState --> DB_UpdateUserUIState[(Update/Insert User UI State)]:::./specs/DB_UpdateUserUIState.md
+        DB_GetUserUIState --> DB_Table_UserUIState[(User UI State Table)]
+        DB_UpdateUserUIState --> DB_Table_UserUIState
+    end
+    
+    %% --- Error Handling ---
+    subgraph Error Handling
+        direction TB
+        API_Login -->|Error| UI_APIError[/API Error Notification/]:::./specs/UI_APIError.md
+        API_Register -->|Error| UI_APIError
+        API_CreateProject -->|Error| UI_APIError
+        API_UpdateProject -->|Error| UI_APIError
+        API_DeleteProject -->|Error| UI_APIError
+        API_CreatePrompt -->|Error| UI_APIError
+        API_UpdatePrompt -->|Error| UI_APIError
+        API_DeletePrompt -->|Error| UI_APIError
+        API_SavePrompt -->|Error| UI_APIError
+        API_DeleteVersion -->|Error| UI_APIError
+        API_Search -->|Error| UI_APIError
+        API_GetUserUIState -->|Error| UI_APIError
+        API_UpdateUserUIState -->|Error| UI_APIError
+        API_CreateGeneralNote -->|Error| UI_APIError
+        API_UpdateGeneralNote -->|Error| UI_APIError
+        API_DeleteGeneralNote -->|Error| UI_APIError
+        API_GetGeneralNotes -->|Error| UI_APIError
+    end
+    
+    %% --- Database Schema ---
+    subgraph Database Schema
+        direction TB
+        DB_Table_Users[(Users Table)]:::./specs/DB_Table_Users.md
+        DB_Table_Projects[(Projects Table)]:::./specs/DB_Table_Projects.md
+        DB_Table_Prompts[(Prompts Table)]:::./specs/DB_Table_Prompts.md
+        DB_Table_Versions[(Prompt Versions Table)]:::./specs/DB_Table_Versions.md
+        DB_Table_Sessions[(Sessions Table)]:::./specs/DB_Table_Sessions.md
+        DB_Table_UserUIState[(User UI State Table)]:::./specs/DB_Table_UserUIState.md
+        DB_Table_GeneralNotes[(General Notes Table)]:::./specs/DB_Table_GeneralNotes.md
+        
+        DB_Table_Users -->|1:N| DB_Table_Projects
+        DB_Table_Users -->|1:N| DB_Table_Prompts
+        DB_Table_Projects -->|1:N| DB_Table_Prompts
+        DB_Table_Prompts -->|1:N| DB_Table_Versions
+        DB_Table_Users -->|1:N| DB_Table_Sessions
+        DB_Table_Users -->|1:1?| DB_Table_UserUIState
+        DB_Table_Users -->|1:N| DB_Table_GeneralNotes
+    end
+    
+    %% --- Node Classification ---
+    classDef critical fill:#f00,color:white;
+    classDef complex fill:#f90,color:white;
+    classDef standard fill:#09f,color:white;
+    classDef simple fill:#0c0,color:white;
+    
+    %% --- Logical Flow Connections ---
+    UI_PromptTabs --> STATE_SelectPrompt
+    UI_PromptTabs -->|Close| STATE_ClosePrompt[("Close Prompt")]:::./specs/STATE_ClosePrompt.md
+    
+    %% --- Cross-Subgraph Connections ---
+    UI_HomePage -->|Logout| API_Logout{{Logout API}}:::./specs/API_Logout.md
+    API_Logout --> BE_DestroySession([Destroy Session]):::./specs/BE_DestroySession.md
+    BE_DestroySession --> AUTH_Check
+    
+    %% --- Critical Path Classification ---
+    class APP_Entry,AUTH_Check,UI_AuthPage,UI_HomePage,UI_PromptEditor,UI_PromptTabs critical;
+    class UI_Sidebar,UI_ProjectList,UI_PromptList,UI_VersionHistory,UI_SearchBar,STATE_Init,UI_ResourceList,FEAT_ResourceConversion,UI_CollapseAllProjects,FEAT_PromptReordering,FEAT_TabReordering complex;
+    class UI_LoginForm,UI_RegisterForm,UI_CreateProject,UI_EditProject,UI_CreatePrompt,UI_RenamePrompt,UI_ThemeToggle,UI_VersionHistoryToggle,UI_FullscreenToggle standard;
+    class DB_Table_Users,DB_Table_Projects,DB_Table_Prompts,DB_Table_Versions,DB_Table_Sessions,STATE_VersionHistoryVisible,STATE_FullscreenMode,UI_ExitFullscreen,DB_Table_UserUIState simple;
+    class API_GetUserUIState,API_UpdateUserUIState,BE_LoadUIState,BE_SaveUIState,DB_GetUserUIState,DB_UpdateUserUIState,UI_FullscreenEditor standard;
 ```
 
 The AI uses this visual memory to understand that changing `API_AuthCheck` will affect both the login form above it and the validator below it.
