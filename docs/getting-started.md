@@ -135,23 +135,21 @@ your-project/
 ```
 
 ### Step 4: Run Install and Reconcile
-
 Give your AI this command:
 > **`ND__Install_And_Reconcile.md`**
 
-This critical step will:
-1. **Analyze** what was actually built vs. planned
-2. **Update** the project and architecture files to match reality
-3. **PAUSE** for your review and approval
-4. **Create** detailed specs for every component
-5. **Configure** your development environment
-6. **Set up** the tracking system
+### Step 5: Verify System Readiness
+After installation, run a comprehensive audit:
+> **`ND__Post_Installation_Audit.md`**
 
-**Important:** The AI will pause after updating the project files. Review them carefully before approving continuation.
+This will:
+- Verify all Noderr components are working
+- Identify missing architectural NodeIDs
+- Auto-create specifications for gaps
+- Provide development readiness report
 
-### Step 5: Begin Systematic Development
-
-Once installation is complete:
+### Step 6: Begin Systematic Development
+Once audit shows 100% readiness:
 > **`ND__Start_Work_Session.md`**
 
 You're now ready to use the Noderr loop for all future development!
