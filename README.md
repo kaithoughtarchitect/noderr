@@ -54,9 +54,115 @@ These NodeIDs aren't just labels - they live in a visual map (Mermaid diagram) t
 
 ```mermaid
 graph TD
-    UI_LoginForm --> API_AuthCheck
-    API_AuthCheck --> SVC_TokenValidator
-    SVC_TokenValidator --> DB_Users
+    %% --- Legend ---
+    subgraph Legend
+        direction TB
+        L_IDConv[NodeID Convention: TYPE_DescriptiveName]
+        L_UI[/UI Component/] --- L_UIDesc(User Interface)
+        L_API{{API Endpoint}} --- L_APIDesc(REST API Routes)
+        L_SVC[[Service Layer]] --- L_SvcDesc(Business Logic)
+        L_DB[(Database)] --- L_DBDesc(Data Operations)
+        L_Decision{Decision} --- L_DecDesc(Conditional Flow)
+        L_State[["State Manager"]] --- L_StateDesc(Client State)
+        L_External{{External API}} --- L_ExtDesc(3rd Party Service)
+    end
+
+    %% --- Entry Flow ---
+    APP_Start((User Opens App)):::./specs/APP_Start.md --> AUTH_Check{User Logged In?}:::./specs/AUTH_Check.md
+    
+    %% --- Authentication Subgraph ---
+    subgraph "Authentication System"
+        AUTH_Check -->|No| UI_LoginPage[/Login Page/]:::./specs/UI_LoginPage.md
+        UI_LoginPage --> UI_LoginForm[/Login Form/]:::./specs/UI_LoginForm.md
+        UI_LoginForm -->|Submit| API_Login{{POST /api/auth/login}}:::./specs/API_Login.md
+        
+        API_Login --> SVC_AuthValidator[[Auth Validator Service]]:::./specs/SVC_AuthValidator.md
+        SVC_AuthValidator --> DB_Users[(Users Database)]:::./specs/DB_Users.md
+        
+        DB_Users --> LoginResult{Valid Credentials?}:::./specs/LoginResult.md
+        LoginResult -->|No| UI_LoginError[/Show Login Error/]:::./specs/UI_LoginError.md
+        LoginResult -->|Yes| SVC_TokenGenerator[[Token Generator]]:::./specs/SVC_TokenGenerator.md
+        
+        UI_LoginError --> UI_LoginForm
+        SVC_TokenGenerator --> API_Login
+        API_Login -->|Success| STATE_UserSession[["Store User Session"]]:::./specs/STATE_UserSession.md
+    end
+    
+    %% --- Main Application ---
+    AUTH_Check -->|Yes| UI_Dashboard[/Dashboard/]:::./specs/UI_Dashboard.md
+    STATE_UserSession --> UI_Dashboard
+    
+    subgraph "E-Commerce Flow"
+        UI_Dashboard --> UI_ProductGrid[/Product Grid/]:::./specs/UI_ProductGrid.md
+        UI_ProductGrid --> UI_ProductCard[/Product Card/]:::./specs/UI_ProductCard.md
+        
+        UI_ProductCard -->|View Details| UI_ProductModal[/Product Details Modal/]:::./specs/UI_ProductModal.md
+        UI_ProductCard -->|Quick Add| STATE_CartManager[["Cart State Manager"]]:::./specs/STATE_CartManager.md
+        
+        UI_ProductModal -->|Add to Cart| STATE_CartManager
+        STATE_CartManager -->|Update| UI_CartIcon[/Cart Icon Badge/]:::./specs/UI_CartIcon.md
+        
+        UI_CartIcon -->|Click| UI_CartDrawer[/Shopping Cart Drawer/]:::./specs/UI_CartDrawer.md
+        UI_CartDrawer -->|Checkout| UI_CheckoutFlow[/Checkout Page/]:::./specs/UI_CheckoutFlow.md
+    end
+    
+    subgraph "Checkout Processing"
+        UI_CheckoutFlow --> API_CreateOrder{{POST /api/orders}}:::./specs/API_CreateOrder.md
+        API_CreateOrder --> SVC_OrderProcessor[[Order Processor]]:::./specs/SVC_OrderProcessor.md
+        
+        SVC_OrderProcessor --> SVC_InventoryCheck[[Inventory Service]]:::./specs/SVC_InventoryCheck.md
+        SVC_InventoryCheck --> DB_Inventory[(Inventory DB)]:::./specs/DB_Inventory.md
+        
+        DB_Inventory --> StockCheck{Items In Stock?}:::./specs/StockCheck.md
+        StockCheck -->|No| UI_StockError[/Out of Stock Error/]:::./specs/UI_StockError.md
+        StockCheck -->|Yes| SVC_PaymentGateway[[Payment Service]]:::./specs/SVC_PaymentGateway.md
+        
+        SVC_PaymentGateway --> EXT_Stripe{{Stripe API}}:::./specs/EXT_Stripe.md
+        EXT_Stripe --> PaymentResult{Payment Success?}:::./specs/PaymentResult.md
+        
+        PaymentResult -->|No| UI_PaymentError[/Payment Failed/]:::./specs/UI_PaymentError.md
+        PaymentResult -->|Yes| DB_Orders[(Orders Database)]:::./specs/DB_Orders.md
+        
+        DB_Orders --> SVC_EmailService[[Email Service]]:::./specs/SVC_EmailService.md
+        SVC_EmailService --> EXT_SendGrid{{SendGrid API}}:::./specs/EXT_SendGrid.md
+        
+        DB_Orders --> UI_OrderSuccess[/Order Confirmation/]:::./specs/UI_OrderSuccess.md
+    end
+    
+    %% --- Error Handling Flow ---
+    subgraph "Error Management"
+        API_Login -->|Error| UI_ErrorToast[/Error Toast Notification/]:::./specs/UI_ErrorToast.md
+        API_CreateOrder -->|Error| UI_ErrorToast
+        EXT_Stripe -->|Error| UI_ErrorToast
+        EXT_SendGrid -->|Error| SVC_ErrorLogger[[Error Logger]]:::./specs/SVC_ErrorLogger.md
+        SVC_ErrorLogger --> DB_ErrorLogs[(Error Logs)]:::./specs/DB_ErrorLogs.md
+    end
+    
+    %% --- Search Feature ---
+    subgraph "Product Search"
+        UI_Dashboard --> UI_SearchBar[/Search Bar/]:::./specs/UI_SearchBar.md
+        UI_SearchBar -->|Type| SVC_SearchDebounce[[Debounce Service]]:::./specs/SVC_SearchDebounce.md
+        SVC_SearchDebounce -->|300ms| API_Search{{GET /api/search}}:::./specs/API_Search.md
+        API_Search --> SVC_SearchEngine[[Search Engine]]:::./specs/SVC_SearchEngine.md
+        SVC_SearchEngine --> DB_Products[(Products DB)]:::./specs/DB_Products.md
+        DB_Products --> UI_SearchResults[/Search Results Dropdown/]:::./specs/UI_SearchResults.md
+        UI_SearchResults -->|Select| UI_ProductModal
+    end
+    
+    %% --- Visual Highlighting for Change Impact ---
+    style SVC_PaymentGateway fill:#ff9999,stroke:#ff0000,stroke-width:3px
+    style API_CreateOrder fill:#ffcccc
+    style UI_CheckoutFlow fill:#ffcccc
+    style EXT_Stripe fill:#ffcccc
+    
+    %% --- Classification ---
+    classDef critical fill:#ff6b6b,color:#fff
+    classDef complex fill:#4ecdc4,color:#fff
+    classDef standard fill:#45b7d1,color:#fff
+    
+    class AUTH_Check,SVC_PaymentGateway,DB_Orders critical
+    class STATE_CartManager,SVC_OrderProcessor,SVC_SearchEngine complex
+    class UI_ProductCard,UI_SearchBar,API_Search standard
 ```
 
 The AI uses this visual memory to understand that changing `API_AuthCheck` will affect both the login form above it and the validator below it.
