@@ -25,13 +25,13 @@ That's it! You now have the Noderr framework in your project.
 ### 3. Run Install and Reconcile
 Give your AI assistant this prompt:
 ```
-ND__Install_And_Reconcile.md
+noderr/prompts/ND__Install_And_Reconcile.md
 ```
 
 ### 4. Run System Audit
 Verify everything is ready:
 ```
-ND__Post_Installation_Audit.md
+noderr/prompts/ND__Post_Installation_Audit.md
 ```
 This ensures 100% architectural completeness and system readiness.
 
@@ -44,55 +44,50 @@ When the AI pauses:
 ## Post-Installation
 Once audit shows 100% readiness:
 ```
-ND__Start_Work_Session.md
+noderr/prompts/ND__Start_Work_Session.md
 ```
 
 ## What's Included
 
 ```
-noderr/                        # Core system files
-├── Core Documentation
-│   ├── noderr_project.md      # Project overview
-│   ├── noderr_architecture.md # System blueprint
-│   ├── noderr_tracker.md      # Progress tracking
-│   ├── noderr_log.md          # Development history
-│   ├── noderr_loop.md         # AI instructions
-│   └── environment_context.md # Environment config
-│
-├── specs/                     # Component specifications
-├── planning/                  # Strategic documents
-└── prompts/                   # Workflow commands
-    ├── Core Loop (LOOP_1A, 1B, 2, 3)
-    ├── Maintenance & Quick Fixes
-    ├── Planning & Analysis
-    └── Quality Assurance
+your-project/
+└── noderr/                    # Everything inside!
+    ├── noderr_project.md
+    ├── noderr_architecture.md
+    ├── noderr_tracker.md
+    ├── noderr_log.md
+    ├── noderr_loop.md
+    ├── environment_context.md
+    ├── specs/
+    ├── planning/
+    └── prompts/
 ```
 
 ## Documentation
 
-- **Quick Start**: See [Getting Started Guide](./docs/getting-started.md)
-- **Concepts**: See [Understanding Noderr](./docs/understanding-noderr.md)
-- **Commands**: See [Prompts Guide](./docs/noderr-prompts-guide.md)
+- **Quick Start**: See [Getting Started Guide](./noderr/docs/noderr_getting_started.md)
+- **Concepts**: See [Understanding Noderr](./noderr/docs/understanding-noderr.md)
+- **Commands**: See [Prompts Guide](./noderr/docs/noderr_prompts_guide.md)
 
 ## Troubleshooting
 
 ### Common Issues
 
 **Environment commands don't work**
-- The `environment_context.md` file must be filled out during installation
+- The `noderr/environment_context.md` file must be filled out during installation
 - Test commands manually in your terminal
 - Update the file with working commands
 
 **AI seems confused**
 - Ensure you've completed the full installation process
-- Run `ND__Start_Work_Session.md` to sync
+- Run `noderr/prompts/ND__Start_Work_Session.md` to sync
 - Check that all files were properly updated
 
 ### Support
 
 For issues or questions:
 - Check the documentation links above
-- Review the [Getting Started Guide](./docs/getting-started.md) for detailed instructions
+- Review the [Getting Started Guide](./noderr/docs/noderr_getting_started.md) for detailed instructions
 - Open an issue on GitHub
 
 ---

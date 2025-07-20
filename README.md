@@ -6,10 +6,10 @@ Your AI already knows how to code. Noderr teaches it how to engineer.
 
 ## Documentation
 
-- **[Getting Started](./docs/getting-started.md)** - Complete user guide and first steps
-- **[Understanding Noderr](./docs/understanding-noderr.md)** - Deep dive into concepts and architecture  
-- **[Prompts Guide](./docs/noderr-prompts-guide.md)** - Command reference for all workflows
-- **[Visual Guide](./docs/noderr-visual-guide.md)** - Visual roadmap of files and structure
+- **[Getting Started](./noderr/docs/noderr_getting_started.md)** - Complete user guide and first steps
+- **[Understanding Noderr](./noderr/docs/understanding-noderr.md)** - Deep dive into concepts and architecture
+- **[Prompts Guide](./noderr/docs/noderr_prompts_guide.md)** - Command reference for all workflows
+- **[Visual Guide](./noderr/docs/noderr_guide.md)** - Visual roadmap of files and structure
 - **[Installation](./INSTALL.md)** - Quick setup instructions
 
 ## What is Noderr?
@@ -68,84 +68,84 @@ graph TD
     end
 
     %% --- Entry Flow ---
-    APP_Start((User Opens App)):::./specs/APP_Start.md --> AUTH_Check{User Logged In?}:::./specs/AUTH_Check.md
+    APP_Start((User Opens App)):::./noderr/specs/APP_Start.md --> AUTH_Check{User Logged In?}:::./noderr/specs/AUTH_Check.md
     
     %% --- Authentication Subgraph ---
     subgraph "Authentication System"
-        AUTH_Check -->|No| UI_LoginPage[/Login Page/]:::./specs/UI_LoginPage.md
-        UI_LoginPage --> UI_LoginForm[/Login Form/]:::./specs/UI_LoginForm.md
-        UI_LoginForm -->|Submit| API_Login{{POST /api/auth/login}}:::./specs/API_Login.md
+        AUTH_Check -->|No| UI_LoginPage[/Login Page/]:::./noderr/specs/UI_LoginPage.md
+        UI_LoginPage --> UI_LoginForm[/Login Form/]:::./noderr/specs/UI_LoginForm.md
+        UI_LoginForm -->|Submit| API_Login{{POST /api/auth/login}}:::./noderr/specs/API_Login.md
         
-        API_Login --> SVC_AuthValidator[[Auth Validator Service]]:::./specs/SVC_AuthValidator.md
-        SVC_AuthValidator --> DB_Users[(Users Database)]:::./specs/DB_Users.md
+        API_Login --> SVC_AuthValidator[[Auth Validator Service]]:::./noderr/specs/SVC_AuthValidator.md
+        SVC_AuthValidator --> DB_Users[(Users Database)]:::./noderr/specs/DB_Users.md
         
-        DB_Users --> LoginResult{Valid Credentials?}:::./specs/LoginResult.md
-        LoginResult -->|No| UI_LoginError[/Show Login Error/]:::./specs/UI_LoginError.md
-        LoginResult -->|Yes| SVC_TokenGenerator[[Token Generator]]:::./specs/SVC_TokenGenerator.md
+        DB_Users --> LoginResult{Valid Credentials?}:::./noderr/specs/LoginResult.md
+        LoginResult -->|No| UI_LoginError[/Show Login Error/]:::./noderr/specs/UI_LoginError.md
+        LoginResult -->|Yes| SVC_TokenGenerator[[Token Generator]]:::./noderr/specs/SVC_TokenGenerator.md
         
         UI_LoginError --> UI_LoginForm
         SVC_TokenGenerator --> API_Login
-        API_Login -->|Success| STATE_UserSession[["Store User Session"]]:::./specs/STATE_UserSession.md
+        API_Login -->|Success| STATE_UserSession[["Store User Session"]]:::./noderr/specs/STATE_UserSession.md
     end
     
     %% --- Main Application ---
-    AUTH_Check -->|Yes| UI_Dashboard[/Dashboard/]:::./specs/UI_Dashboard.md
+    AUTH_Check -->|Yes| UI_Dashboard[/Dashboard/]:::./noderr/specs/UI_Dashboard.md
     STATE_UserSession --> UI_Dashboard
     
     subgraph "E-Commerce Flow"
-        UI_Dashboard --> UI_ProductGrid[/Product Grid/]:::./specs/UI_ProductGrid.md
-        UI_ProductGrid --> UI_ProductCard[/Product Card/]:::./specs/UI_ProductCard.md
+        UI_Dashboard --> UI_ProductGrid[/Product Grid/]:::./noderr/specs/UI_ProductGrid.md
+        UI_ProductGrid --> UI_ProductCard[/Product Card/]:::./noderr/specs/UI_ProductCard.md
         
-        UI_ProductCard -->|View Details| UI_ProductModal[/Product Details Modal/]:::./specs/UI_ProductModal.md
-        UI_ProductCard -->|Quick Add| STATE_CartManager[["Cart State Manager"]]:::./specs/STATE_CartManager.md
+        UI_ProductCard -->|View Details| UI_ProductModal[/Product Details Modal/]:::./noderr/specs/UI_ProductModal.md
+        UI_ProductCard -->|Quick Add| STATE_CartManager[["Cart State Manager"]]:::./noderr/specs/STATE_CartManager.md
         
         UI_ProductModal -->|Add to Cart| STATE_CartManager
-        STATE_CartManager -->|Update| UI_CartIcon[/Cart Icon Badge/]:::./specs/UI_CartIcon.md
+        STATE_CartManager -->|Update| UI_CartIcon[/Cart Icon Badge/]:::./noderr/specs/UI_CartIcon.md
         
-        UI_CartIcon -->|Click| UI_CartDrawer[/Shopping Cart Drawer/]:::./specs/UI_CartDrawer.md
-        UI_CartDrawer -->|Checkout| UI_CheckoutFlow[/Checkout Page/]:::./specs/UI_CheckoutFlow.md
+        UI_CartIcon -->|Click| UI_CartDrawer[/Shopping Cart Drawer/]:::./noderr/specs/UI_CartDrawer.md
+        UI_CartDrawer -->|Checkout| UI_CheckoutFlow[/Checkout Page/]:::./noderr/specs/UI_CheckoutFlow.md
     end
     
     subgraph "Checkout Processing"
-        UI_CheckoutFlow --> API_CreateOrder{{POST /api/orders}}:::./specs/API_CreateOrder.md
-        API_CreateOrder --> SVC_OrderProcessor[[Order Processor]]:::./specs/SVC_OrderProcessor.md
+        UI_CheckoutFlow --> API_CreateOrder{{POST /api/orders}}:::./noderr/specs/API_CreateOrder.md
+        API_CreateOrder --> SVC_OrderProcessor[[Order Processor]]:::./noderr/specs/SVC_OrderProcessor.md
         
-        SVC_OrderProcessor --> SVC_InventoryCheck[[Inventory Service]]:::./specs/SVC_InventoryCheck.md
-        SVC_InventoryCheck --> DB_Inventory[(Inventory DB)]:::./specs/DB_Inventory.md
+        SVC_OrderProcessor --> SVC_InventoryCheck[[Inventory Service]]:::./noderr/specs/SVC_InventoryCheck.md
+        SVC_InventoryCheck --> DB_Inventory[(Inventory DB)]:::./noderr/specs/DB_Inventory.md
         
-        DB_Inventory --> StockCheck{Items In Stock?}:::./specs/StockCheck.md
-        StockCheck -->|No| UI_StockError[/Out of Stock Error/]:::./specs/UI_StockError.md
-        StockCheck -->|Yes| SVC_PaymentGateway[[Payment Service]]:::./specs/SVC_PaymentGateway.md
+        DB_Inventory --> StockCheck{Items In Stock?}:::./noderr/specs/StockCheck.md
+        StockCheck -->|No| UI_StockError[/Out of Stock Error/]:::./noderr/specs/UI_StockError.md
+        StockCheck -->|Yes| SVC_PaymentGateway[[Payment Service]]:::./noderr/specs/SVC_PaymentGateway.md
         
-        SVC_PaymentGateway --> EXT_Stripe{{Stripe API}}:::./specs/EXT_Stripe.md
-        EXT_Stripe --> PaymentResult{Payment Success?}:::./specs/PaymentResult.md
+        SVC_PaymentGateway --> EXT_Stripe{{Stripe API}}:::./noderr/specs/EXT_Stripe.md
+        EXT_Stripe --> PaymentResult{Payment Success?}:::./noderr/specs/PaymentResult.md
         
-        PaymentResult -->|No| UI_PaymentError[/Payment Failed/]:::./specs/UI_PaymentError.md
-        PaymentResult -->|Yes| DB_Orders[(Orders Database)]:::./specs/DB_Orders.md
+        PaymentResult -->|No| UI_PaymentError[/Payment Failed/]:::./noderr/specs/UI_PaymentError.md
+        PaymentResult -->|Yes| DB_Orders[(Orders Database)]:::./noderr/specs/DB_Orders.md
         
-        DB_Orders --> SVC_EmailService[[Email Service]]:::./specs/SVC_EmailService.md
-        SVC_EmailService --> EXT_SendGrid{{SendGrid API}}:::./specs/EXT_SendGrid.md
+        DB_Orders --> SVC_EmailService[[Email Service]]:::./noderr/specs/SVC_EmailService.md
+        SVC_EmailService --> EXT_SendGrid{{SendGrid API}}:::./noderr/specs/EXT_SendGrid.md
         
-        DB_Orders --> UI_OrderSuccess[/Order Confirmation/]:::./specs/UI_OrderSuccess.md
+        DB_Orders --> UI_OrderSuccess[/Order Confirmation/]:::./noderr/specs/UI_OrderSuccess.md
     end
     
     %% --- Error Handling Flow ---
     subgraph "Error Management"
-        API_Login -->|Error| UI_ErrorToast[/Error Toast Notification/]:::./specs/UI_ErrorToast.md
+        API_Login -->|Error| UI_ErrorToast[/Error Toast Notification/]:::./noderr/specs/UI_ErrorToast.md
         API_CreateOrder -->|Error| UI_ErrorToast
         EXT_Stripe -->|Error| UI_ErrorToast
-        EXT_SendGrid -->|Error| SVC_ErrorLogger[[Error Logger]]:::./specs/SVC_ErrorLogger.md
-        SVC_ErrorLogger --> DB_ErrorLogs[(Error Logs)]:::./specs/DB_ErrorLogs.md
+        EXT_SendGrid -->|Error| SVC_ErrorLogger[[Error Logger]]:::./noderr/specs/SVC_ErrorLogger.md
+        SVC_ErrorLogger --> DB_ErrorLogs[(Error Logs)]:::./noderr/specs/DB_ErrorLogs.md
     end
     
     %% --- Search Feature ---
     subgraph "Product Search"
-        UI_Dashboard --> UI_SearchBar[/Search Bar/]:::./specs/UI_SearchBar.md
-        UI_SearchBar -->|Type| SVC_SearchDebounce[[Debounce Service]]:::./specs/SVC_SearchDebounce.md
-        SVC_SearchDebounce -->|300ms| API_Search{{GET /api/search}}:::./specs/API_Search.md
-        API_Search --> SVC_SearchEngine[[Search Engine]]:::./specs/SVC_SearchEngine.md
-        SVC_SearchEngine --> DB_Products[(Products DB)]:::./specs/DB_Products.md
-        DB_Products --> UI_SearchResults[/Search Results Dropdown/]:::./specs/UI_SearchResults.md
+        UI_Dashboard --> UI_SearchBar[/Search Bar/]:::./noderr/specs/UI_SearchBar.md
+        UI_SearchBar -->|Type| SVC_SearchDebounce[[Debounce Service]]:::./noderr/specs/SVC_SearchDebounce.md
+        SVC_SearchDebounce -->|300ms| API_Search{{GET /api/search}}:::./noderr/specs/API_Search.md
+        API_Search --> SVC_SearchEngine[[Search Engine]]:::./noderr/specs/SVC_SearchEngine.md
+        SVC_SearchEngine --> DB_Products[(Products DB)]:::./noderr/specs/DB_Products.md
+        DB_Products --> UI_SearchResults[/Search Results Dropdown/]:::./noderr/specs/UI_SearchResults.md
         UI_SearchResults -->|Select| UI_ProductModal
     end
     
@@ -169,7 +169,7 @@ The AI uses this visual memory to understand that changing `API_AuthCheck` will 
 
 ### 3. Blueprints for Every Building Block (Specifications)
 
-Each NodeID has its own detailed blueprint in the `specs/` folder. These contain:
+Each NodeID has its own detailed blueprint in the `noderr/specs/` folder. These contain:
 - Purpose and responsibilities
 - Dependencies and interfaces
 - Core logic and behavior
@@ -252,7 +252,7 @@ The tracker dashboard shows exactly what's done, what's in progress, and what's 
 Every feature follows this systematic 4-step process:
 
 **Step 1A: Impact Analysis**
-→ Use prompt: `ND__[LOOP_1A]__Propose_Change_Set.md`
+→ Use prompt: `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -262,19 +262,19 @@ AI: "This requires changing:
 ```
 
 **Step 1B: Draft Specs**
-→ Use prompt: `ND__[LOOP_1B]__Draft_Specs.md`
+→ Use prompt: `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`
 - AI marks NodeIDs as Work-In-Progress (WIP)
 - Creates detailed blueprints for every affected NodeID
 - You review the specifications
 
 **Step 2: Implement Change Set**
-→ Use prompt: `ND__[LOOP_2]__Implement_Change_Set.md`
+→ Use prompt: `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`
 - AI builds ALL NodeIDs in the Change Set together
 - Runs tests and verification
 - Ensures quality gates are met
 
 **Step 3: Finalize & Commit**
-→ Use prompt: `ND__[LOOP_3]__Finalize_And_Commit.md`
+→ Use prompt: `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`
 - Updates all specs to match what was built
 - Logs decisions and discoveries
 - Creates a clean git commit
@@ -291,10 +291,10 @@ Unlike traditional tools, Noderr is installed AFTER you build your initial proto
 1. **Prepare your vision** (blueprint, project overview, architecture)
 2. **Build initial prototype** with AI based on those plans
 3. **Download & add Noderr** - [Get noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
-4. **Run Install prompt** - `ND__Install_And_Reconcile.md`
-5. **Run System Audit** - `ND__Post_Installation_Audit.md`
+4. **Run Install prompt** - `noderr/prompts/ND__Install_And_Reconcile.md`
+5. **Run System Audit** - `noderr/prompts/ND__Post_Installation_Audit.md`
 
-See [Getting Started](./docs/getting-started.md) for detailed instructions.
+See [Getting Started](./noderr/docs/noderr_getting_started.md) for detailed instructions.
 
 ---
 
@@ -302,15 +302,16 @@ See [Getting Started](./docs/getting-started.md) for detailed instructions.
 
 ```
 your-project/
-├── 📁 noderr/
-│   ├── 📄 noderr_project.md      # Your project's vision & standards
-│   ├── 🗺️  noderr_architecture.md # Visual system map  
-│   ├── 📊 noderr_tracker.md      # Progress dashboard
-│   ├── 📝 noderr_log.md          # Development history
-│   └── 🔧 noderr_loop.md         # AI's instruction manual
-├── 📁 specs/                     # Blueprints for each NodeID
-├── 📁 planning/                  # Feature analysis docs
-└── 📄 environment_context.md     # Your environment setup
+└── noderr/                    # Everything inside!
+    ├── noderr_project.md
+    ├── noderr_architecture.md
+    ├── noderr_tracker.md
+    ├── noderr_log.md
+    ├── noderr_loop.md
+    ├── environment_context.md
+    ├── specs/
+    ├── planning/
+    └── prompts/
 ```
 
 ---
@@ -350,7 +351,7 @@ function Settings() { ... }  // New component, doesn't connect
 ## Critical Concepts
 
 ### The Environment Context
-The AI cannot function without `environment_context.md` being configured. This file teaches the AI:
+The AI cannot function without `noderr/environment_context.md` being configured. This file teaches the AI:
 - What commands to use on YOUR system (npm vs yarn, python vs python3)
 - How to run tests in YOUR setup
 - Where YOUR database lives
@@ -359,11 +360,11 @@ The AI cannot function without `environment_context.md` being configured. This f
 ### The Prompts System
 You don't just chat with the AI. You use specific prompt files to trigger each phase:
 ```
-ND__Start_Work_Session.md         → Begin work
-ND__[LOOP_1A]__Propose_Change_Set.md → Start a feature
-ND__[LOOP_1B]__Draft_Specs.md    → Review specs
-ND__[LOOP_2]__Implement_Change_Set.md → Build it
-ND__[LOOP_3]__Finalize_And_Commit.md → Finish up
+noderr/prompts/ND__Start_Work_Session.md         → Begin work
+noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md → Start a feature
+noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md    → Review specs
+noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md → Build it
+noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md → Finish up
 ```
 
 ### ARC Verification
