@@ -47,16 +47,17 @@ This approach ensures Noderr documents what you ACTUALLY built, not just what yo
 
 The ZIP contains:
 ```
-noderr/
-├── environment_context.md     (template - to be filled)
-├── noderr_project.md         (template - to be updated)
-├── noderr_architecture.md    (template - to be updated) 
-├── noderr_tracker.md         (tracking system)
-├── noderr_log.md            (project history)
-├── noderr_loop.md           (AI instructions)
-├── specs/                   (for component blueprints)
-├── planning/                (for strategic documents)
-└── prompts/                 (workflow commands)
+your-project/
+└── noderr/                    # Everything inside!
+    ├── noderr_project.md
+    ├── noderr_architecture.md
+    ├── noderr_tracker.md
+    ├── noderr_log.md
+    ├── noderr_loop.md
+    ├── environment_context.md
+    ├── specs/
+    ├── planning/
+    └── prompts/
 ```
 
 ---
@@ -74,13 +75,13 @@ You need to create three foundational documents. There are many ways to approach
    - This generates Design Pillars → Implementation Tasks → Visual Blueprint
    - Provides comprehensive strategic foundation for your project
 
-2. **Project Overview** (`noderr_project.md`)
-   - Can use `ND__Project_Generator.md` prompt (if available)
+2. **Project Overview** (`noderr/noderr_project.md`)
+   - Can use `noderr/prompts/ND__Project_Generator.md` prompt (if available)
    - Or create through conversation based on your blueprint
    - Defines technology stack, standards, and scope
 
-3. **Architecture Diagram** (`noderr_architecture.md`)
-   - Can use `ND__Architecture_Generator.md` prompt (if available)
+3. **Architecture Diagram** (`noderr/noderr_architecture.md`)
+   - Can use `noderr/prompts/ND__Architecture_Generator.md` prompt (if available)
    - Or design through discussion using your blueprint as reference
    - Creates the technical system design
 
@@ -129,18 +130,18 @@ unzip noderr-starter.zip -d your-project/
 your-project/
 ├── your-code-files...        (already built)
 └── noderr/                   (just extracted)
-    ├── environment_context.md
-    ├── noderr_project.md
+    ├── noderr/environment_context.md
+    ├── noderr/noderr_project.md
     └── ... other Noderr files
 ```
 
 ### Step 4: Run Install and Reconcile
 Give your AI this command:
-> **`ND__Install_And_Reconcile.md`**
+> **`noderr/prompts/ND__Install_And_Reconcile.md`**
 
 ### Step 5: Verify System Readiness
 After installation, run a comprehensive audit:
-> **`ND__Post_Installation_Audit.md`**
+> **`noderr/prompts/ND__Post_Installation_Audit.md`**
 
 This will:
 - Verify all Noderr components are working
@@ -150,7 +151,7 @@ This will:
 
 ### Step 6: Begin Systematic Development
 Once audit shows 100% readiness:
-> **`ND__Start_Work_Session.md`**
+> **`noderr/prompts/ND__Start_Work_Session.md`**
 
 You're now ready to use the Noderr loop for all future development!
 
@@ -181,19 +182,19 @@ Every feature you build follows this robust, structured loop:
 
 ### What Each Step Does:
 
-**`ND__[LOOP_1A]__Propose_Change_Set.md`**
+**`noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`**
 *   **Agent's Job:** Analyzes the `PrimaryGoal` and identifies every single new or existing node that will be affected.
 *   **Your Job:** Review and approve the proposed Change Set.
 
-**`ND__[LOOP_1B]__Draft_Specs.md`**
+**`noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`**
 *   **Agent's Job:** Marks all nodes as `[WIP]` and writes detailed specifications.
-*   **Your Job:** Review the specs in the `specs/` directory.
+*   **Your Job:** Review the specs in the `noderr/specs/` directory.
 
-**`ND__[LOOP_2]__Implement_Change_Set.md`**
+**`noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`**
 *   **Agent's Job:** Writes all code, runs tests, and verifies against specs.
 *   **Your Job:** Monitor progress, available for any blockers.
 
-**`ND__[LOOP_3]__Finalize_And_Commit.md`**
+**`noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`**
 *   **Agent's Job:** Updates specs to "as-built" state, logs work, commits.
 *   **Your Job:** Nothing - this step is fully automated.
 
@@ -204,7 +205,7 @@ Every feature you build follows this robust, structured loop:
 ### Starting Every Work Session
 
 Always begin with:
-> **`ND__Start_Work_Session.md`**
+> **`noderr/prompts/ND__Start_Work_Session.md`**
 
 The agent will:
 - Sync with your project state
@@ -214,7 +215,7 @@ The agent will:
 ### Building a New Feature (Example)
 
 ```
-You: ND__Start_Work_Session.md
+You: noderr/prompts/ND__Start_Work_Session.md
 Agent: "Ready for the next PrimaryGoal."
 
 You: "Primary Goal: Add password reset functionality"
@@ -237,7 +238,7 @@ Agent: [Continues through the loop...]
 ### Quick Fixes (Micro-Fix)
 For tiny changes (typos, small CSS tweaks):
 ```
-ND__Execute_Micro_Fix.md
+noderr/prompts/ND__Execute_Micro_Fix.md
 
 Target: UI_LoginForm
 Issue: Fix typo in button text "Sigin" -> "Sign in"
@@ -246,7 +247,7 @@ Issue: Fix typo in button text "Sigin" -> "Sign in"
 ### Handling Bugs
 When something is broken:
 ```
-ND__Handle_Critical_Issue.md
+noderr/prompts/ND__Handle_Critical_Issue.md
 
 Affected Component: API_Authentication
 Severity: High
@@ -256,7 +257,7 @@ Issue Description: Login returns 500 error after 5 failed attempts
 ### Code Cleanup (Refactoring)
 To improve existing code:
 ```
-ND__Refactor_Node.md
+noderr/prompts/ND__Refactor_Node.md
 
 Target NodeID: API_UserSearch
 Refactoring Goal: Optimize database queries to reduce N+1 problem
@@ -265,7 +266,7 @@ Refactoring Goal: Optimize database queries to reduce N+1 problem
 ### Planning Features
 Before building, analyze ideas:
 ```
-ND__Feature_Idea_Breakdown.md
+noderr/prompts/ND__Feature_Idea_Breakdown.md
 
 Here are my feature ideas:
 - Add social login (Google, GitHub)
@@ -281,31 +282,31 @@ Here are my feature ideas:
 ### Initial Setup
 | Prompt | Purpose | When to Use |
 |:-------|:--------|:------------|
-| `ND__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
+| `noderr/prompts/ND__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
 
 ### Core Development Loop
 | Prompt | Purpose | When to Use |
 |:-------|:--------|:------------|
-| `ND__Start_Work_Session.md` | Sync AI with project | Beginning of each session |
-| `ND__[LOOP_1A]__Propose_Change_Set.md` | Analyze feature impact | Automatic after PrimaryGoal |
-| `ND__[LOOP_1B]__Draft_Specs.md` | Create blueprints | After approving Change Set |
-| `ND__[LOOP_2]__Implement_Change_Set.md` | Build and test | After approving specs |
-| `ND__[LOOP_3]__Finalize_And_Commit.md` | Document and commit | After implementation passes |
+| `noderr/prompts/ND__Start_Work_Session.md` | Sync AI with project | Beginning of each session |
+| `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md` | Analyze feature impact | Automatic after PrimaryGoal |
+| `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md` | Create blueprints | After approving Change Set |
+| `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md` | Build and test | After approving specs |
+| `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md` | Document and commit | After implementation passes |
 
 ### Quick Actions
 | Prompt | Use Case | Typical Duration |
 |:-------|:---------|:-----------------|
-| `ND__Execute_Micro_Fix.md` | Typos, small tweaks | < 5 minutes |
-| `ND__Handle_Critical_Issue.md` | Bugs, broken features | Varies by severity |
-| `ND__Refactor_Node.md` | Code quality improvements | 15-60 minutes |
+| `noderr/prompts/ND__Execute_Micro_Fix.md` | Typos, small tweaks | < 5 minutes |
+| `noderr/prompts/ND__Handle_Critical_Issue.md` | Bugs, broken features | Varies by severity |
+| `noderr/prompts/ND__Refactor_Node.md` | Code quality improvements | 15-60 minutes |
 
 ### Planning & Analysis
 | Prompt | Purpose | Output |
 |:-------|:--------|:-------|
-| `ND__Feature_Idea_Breakdown.md` | Prioritize multiple features | Markdown report in planning/ |
-| `ND__Pre_Flight_Feature_Analysis.md` | Deep analysis of one feature | Detailed implementation plan |
-| `ND__Architecture_Health_Review.md` | Full project audit | Health score and action items |
-| `ND__Advanced_Security_Audit.md` | OWASP-based security check | Vulnerability report |
+| `noderr/prompts/ND__Feature_Idea_Breakdown.md` | Prioritize multiple features | Markdown report in noderr/planning/ |
+| `noderr/prompts/ND__Pre_Flight_Feature_Analysis.md` | Deep analysis of one feature | Detailed implementation plan |
+| `noderr/prompts/ND__Architecture_Health_Review.md` | Full project audit | Health score and action items |
+| `noderr/prompts/ND__Advanced_Security_Audit.md` | OWASP-based security check | Vulnerability report |
 
 ---
 
@@ -317,7 +318,7 @@ Here are my feature ideas:
 **Symptoms:** AI tries to run commands that don't work
 
 **Solutions:**
-- Check `environment_context.md` was filled out during installation
+- Check `noderr/environment_context.md` was filled out during installation
 - Verify commands work in your terminal
 - Common fixes:
   - Use `python3` instead of `python`
@@ -328,7 +329,7 @@ Here are my feature ideas:
 **Symptoms:** AI suggests already-completed tasks or misunderstands architecture
 
 **Solutions:**
-- Run `ND__Start_Work_Session.md` to resync
+- Run `noderr/prompts/ND__Start_Work_Session.md` to resync
 - Check all NodeIDs in tracker have spec files
 - Verify architecture diagram matches implementation
 - Ensure recent changes were committed
@@ -347,15 +348,15 @@ Here are my feature ideas:
 
 **Solutions:**
 - Follow the complete 4-step Loop
-- Check `noderr_tracker.md` shows correct statuses
+- Check `noderr/noderr_tracker.md` shows correct statuses
 - Verify git commits are happening
 - Don't skip steps - each updates different files
 
 ### Getting Help
 
 When stuck, check these in order:
-1. **Review `noderr_log.md`** - Recent entries often reveal issues
-2. **Check `noderr_tracker.md`** - Ensure dependencies are correct
+1. **Review `noderr/noderr_log.md`** - Recent entries often reveal issues
+2. **Check `noderr/noderr_tracker.md`** - Ensure dependencies are correct
 3. **Verify architecture** - Missing connections cause confusion
 4. **Test environment commands** - Manual testing reveals broken commands
 5. **Review recent git commits** - See what actually changed
@@ -388,7 +389,7 @@ When stuck, check these in order:
 
 1. Prepare your three foundational documents
 2. Build your initial prototype
-3. Install Noderr with `ND__Install_And_Reconcile.md`
+3. Install Noderr with `noderr/prompts/ND__Install_And_Reconcile.md`
 4. Start systematic development!
 
 Remember: The first project might feel slow as you learn the workflow, but each subsequent project becomes faster and more natural. Noderr's true power emerges as projects grow in complexity.
