@@ -38,84 +38,84 @@ graph TD
     end
 
     %% --- Entry Flow ---
-    APP_Start((User Opens App)):::./specs/APP_Start.md --> AUTH_Check{User Logged In?}:::./specs/AUTH_Check.md
+    APP_Start((User Opens App)):::./noderr/specs/APP_Start.md --> AUTH_Check{User Logged In?}:::./noderr/specs/AUTH_Check.md
     
     %% --- Authentication Subgraph ---
     subgraph "Authentication System"
-        AUTH_Check -->|No| UI_LoginPage[/Login Page/]:::./specs/UI_LoginPage.md
-        UI_LoginPage --> UI_LoginForm[/Login Form/]:::./specs/UI_LoginForm.md
-        UI_LoginForm -->|Submit| API_Login{{POST /api/auth/login}}:::./specs/API_Login.md
+        AUTH_Check -->|No| UI_LoginPage[/Login Page/]:::./noderr/specs/UI_LoginPage.md
+        UI_LoginPage --> UI_LoginForm[/Login Form/]:::./noderr/specs/UI_LoginForm.md
+        UI_LoginForm -->|Submit| API_Login{{POST /api/auth/login}}:::./noderr/specs/API_Login.md
         
-        API_Login --> SVC_AuthValidator[[Auth Validator Service]]:::./specs/SVC_AuthValidator.md
-        SVC_AuthValidator --> DB_Users[(Users Database)]:::./specs/DB_Users.md
+        API_Login --> SVC_AuthValidator[[Auth Validator Service]]:::./noderr/specs/SVC_AuthValidator.md
+        SVC_AuthValidator --> DB_Users[(Users Database)]:::./noderr/specs/DB_Users.md
         
-        DB_Users --> LoginResult{Valid Credentials?}:::./specs/LoginResult.md
-        LoginResult -->|No| UI_LoginError[/Show Login Error/]:::./specs/UI_LoginError.md
-        LoginResult -->|Yes| SVC_TokenGenerator[[Token Generator]]:::./specs/SVC_TokenGenerator.md
+        DB_Users --> LoginResult{Valid Credentials?}:::./noderr/specs/LoginResult.md
+        LoginResult -->|No| UI_LoginError[/Show Login Error/]:::./noderr/specs/UI_LoginError.md
+        LoginResult -->|Yes| SVC_TokenGenerator[[Token Generator]]:::./noderr/specs/SVC_TokenGenerator.md
         
         UI_LoginError --> UI_LoginForm
         SVC_TokenGenerator --> API_Login
-        API_Login -->|Success| STATE_UserSession[["Store User Session"]]:::./specs/STATE_UserSession.md
+        API_Login -->|Success| STATE_UserSession[["Store User Session"]]:::./noderr/specs/STATE_UserSession.md
     end
     
     %% --- Main Application ---
-    AUTH_Check -->|Yes| UI_Dashboard[/Dashboard/]:::./specs/UI_Dashboard.md
+    AUTH_Check -->|Yes| UI_Dashboard[/Dashboard/]:::./noderr/specs/UI_Dashboard.md
     STATE_UserSession --> UI_Dashboard
     
     subgraph "E-Commerce Flow"
-        UI_Dashboard --> UI_ProductGrid[/Product Grid/]:::./specs/UI_ProductGrid.md
-        UI_ProductGrid --> UI_ProductCard[/Product Card/]:::./specs/UI_ProductCard.md
+        UI_Dashboard --> UI_ProductGrid[/Product Grid/]:::./noderr/specs/UI_ProductGrid.md
+        UI_ProductGrid --> UI_ProductCard[/Product Card/]:::./noderr/specs/UI_ProductCard.md
         
-        UI_ProductCard -->|View Details| UI_ProductModal[/Product Details Modal/]:::./specs/UI_ProductModal.md
-        UI_ProductCard -->|Quick Add| STATE_CartManager[["Cart State Manager"]]:::./specs/STATE_CartManager.md
+        UI_ProductCard -->|View Details| UI_ProductModal[/Product Details Modal/]:::./noderr/specs/UI_ProductModal.md
+        UI_ProductCard -->|Quick Add| STATE_CartManager[["Cart State Manager"]]:::./noderr/specs/STATE_CartManager.md
         
         UI_ProductModal -->|Add to Cart| STATE_CartManager
-        STATE_CartManager -->|Update| UI_CartIcon[/Cart Icon Badge/]:::./specs/UI_CartIcon.md
+        STATE_CartManager -->|Update| UI_CartIcon[/Cart Icon Badge/]:::./noderr/specs/UI_CartIcon.md
         
-        UI_CartIcon -->|Click| UI_CartDrawer[/Shopping Cart Drawer/]:::./specs/UI_CartDrawer.md
-        UI_CartDrawer -->|Checkout| UI_CheckoutFlow[/Checkout Page/]:::./specs/UI_CheckoutFlow.md
+        UI_CartIcon -->|Click| UI_CartDrawer[/Shopping Cart Drawer/]:::./noderr/specs/UI_CartDrawer.md
+        UI_CartDrawer -->|Checkout| UI_CheckoutFlow[/Checkout Page/]:::./noderr/specs/UI_CheckoutFlow.md
     end
     
     subgraph "Checkout Processing"
-        UI_CheckoutFlow --> API_CreateOrder{{POST /api/orders}}:::./specs/API_CreateOrder.md
-        API_CreateOrder --> SVC_OrderProcessor[[Order Processor]]:::./specs/SVC_OrderProcessor.md
+        UI_CheckoutFlow --> API_CreateOrder{{POST /api/orders}}:::./noderr/specs/API_CreateOrder.md
+        API_CreateOrder --> SVC_OrderProcessor[[Order Processor]]:::./noderr/specs/SVC_OrderProcessor.md
         
-        SVC_OrderProcessor --> SVC_InventoryCheck[[Inventory Service]]:::./specs/SVC_InventoryCheck.md
-        SVC_InventoryCheck --> DB_Inventory[(Inventory DB)]:::./specs/DB_Inventory.md
+        SVC_OrderProcessor --> SVC_InventoryCheck[[Inventory Service]]:::./noderr/specs/SVC_InventoryCheck.md
+        SVC_InventoryCheck --> DB_Inventory[(Inventory DB)]:::./noderr/specs/DB_Inventory.md
         
-        DB_Inventory --> StockCheck{Items In Stock?}:::./specs/StockCheck.md
-        StockCheck -->|No| UI_StockError[/Out of Stock Error/]:::./specs/UI_StockError.md
-        StockCheck -->|Yes| SVC_PaymentGateway[[Payment Service]]:::./specs/SVC_PaymentGateway.md
+        DB_Inventory --> StockCheck{Items In Stock?}:::./noderr/specs/StockCheck.md
+        StockCheck -->|No| UI_StockError[/Out of Stock Error/]:::./noderr/specs/UI_StockError.md
+        StockCheck -->|Yes| SVC_PaymentGateway[[Payment Service]]:::./noderr/specs/SVC_PaymentGateway.md
         
-        SVC_PaymentGateway --> EXT_Stripe{{Stripe API}}:::./specs/EXT_Stripe.md
-        EXT_Stripe --> PaymentResult{Payment Success?}:::./specs/PaymentResult.md
+        SVC_PaymentGateway --> EXT_Stripe{{Stripe API}}:::./noderr/specs/EXT_Stripe.md
+        EXT_Stripe --> PaymentResult{Payment Success?}:::./noderr/specs/PaymentResult.md
         
-        PaymentResult -->|No| UI_PaymentError[/Payment Failed/]:::./specs/UI_PaymentError.md
-        PaymentResult -->|Yes| DB_Orders[(Orders Database)]:::./specs/DB_Orders.md
+        PaymentResult -->|No| UI_PaymentError[/Payment Failed/]:::./noderr/specs/UI_PaymentError.md
+        PaymentResult -->|Yes| DB_Orders[(Orders Database)]:::./noderr/specs/DB_Orders.md
         
-        DB_Orders --> SVC_EmailService[[Email Service]]:::./specs/SVC_EmailService.md
-        SVC_EmailService --> EXT_SendGrid{{SendGrid API}}:::./specs/EXT_SendGrid.md
+        DB_Orders --> SVC_EmailService[[Email Service]]:::./noderr/specs/SVC_EmailService.md
+        SVC_EmailService --> EXT_SendGrid{{SendGrid API}}:::./noderr/specs/EXT_SendGrid.md
         
-        DB_Orders --> UI_OrderSuccess[/Order Confirmation/]:::./specs/UI_OrderSuccess.md
+        DB_Orders --> UI_OrderSuccess[/Order Confirmation/]:::./noderr/specs/UI_OrderSuccess.md
     end
     
     %% --- Error Handling Flow ---
     subgraph "Error Management"
-        API_Login -->|Error| UI_ErrorToast[/Error Toast Notification/]:::./specs/UI_ErrorToast.md
+        API_Login -->|Error| UI_ErrorToast[/Error Toast Notification/]:::./noderr/specs/UI_ErrorToast.md
         API_CreateOrder -->|Error| UI_ErrorToast
         EXT_Stripe -->|Error| UI_ErrorToast
-        EXT_SendGrid -->|Error| SVC_ErrorLogger[[Error Logger]]:::./specs/SVC_ErrorLogger.md
-        SVC_ErrorLogger --> DB_ErrorLogs[(Error Logs)]:::./specs/DB_ErrorLogs.md
+        EXT_SendGrid -->|Error| SVC_ErrorLogger[[Error Logger]]:::./noderr/specs/SVC_ErrorLogger.md
+        SVC_ErrorLogger --> DB_ErrorLogs[(Error Logs)]:::./noderr/specs/DB_ErrorLogs.md
     end
     
     %% --- Search Feature ---
     subgraph "Product Search"
-        UI_Dashboard --> UI_SearchBar[/Search Bar/]:::./specs/UI_SearchBar.md
-        UI_SearchBar -->|Type| SVC_SearchDebounce[[Debounce Service]]:::./specs/SVC_SearchDebounce.md
-        SVC_SearchDebounce -->|300ms| API_Search{{GET /api/search}}:::./specs/API_Search.md
-        API_Search --> SVC_SearchEngine[[Search Engine]]:::./specs/SVC_SearchEngine.md
-        SVC_SearchEngine --> DB_Products[(Products DB)]:::./specs/DB_Products.md
-        DB_Products --> UI_SearchResults[/Search Results Dropdown/]:::./specs/UI_SearchResults.md
+        UI_Dashboard --> UI_SearchBar[/Search Bar/]:::./noderr/specs/UI_SearchBar.md
+        UI_SearchBar -->|Type| SVC_SearchDebounce[[Debounce Service]]:::./noderr/specs/SVC_SearchDebounce.md
+        SVC_SearchDebounce -->|300ms| API_Search{{GET /api/search}}:::./noderr/specs/API_Search.md
+        API_Search --> SVC_SearchEngine[[Search Engine]]:::./noderr/specs/SVC_SearchEngine.md
+        SVC_SearchEngine --> DB_Products[(Products DB)]:::./noderr/specs/DB_Products.md
+        DB_Products --> UI_SearchResults[/Search Results Dropdown/]:::./noderr/specs/UI_SearchResults.md
         UI_SearchResults -->|Select| UI_ProductModal
     end
     
@@ -145,9 +145,9 @@ Noderr AI: "I see `UI_LoginForm` connects to `API_AuthCheck` which validates thr
 
 ### 3. Blueprints for Every Building Block (Specifications)
 
-Each NodeID has its own detailed blueprint file in the `specs/` folder:
-- `UI_LoginForm` → `specs/UI_LoginForm.md`
-- `API_AuthCheck` → `specs/API_AuthCheck.md`
+Each NodeID has its own detailed blueprint file in the `noderr/specs/` folder:
+- `UI_LoginForm` → `noderr/specs/UI_LoginForm.md`
+- `API_AuthCheck` → `noderr/specs/API_AuthCheck.md`
 
 These specs contain everything the AI needs to know:
 - **Purpose**: What this building block does
@@ -177,7 +177,7 @@ Here's the magic of how it all works together:
    - Knows how they connect
    - Knows what changes are safe to make
 
-### 5. Your Mission Control Dashboard (noderr_tracker.md)
+### 5. Your Mission Control Dashboard (noderr/noderr_tracker.md)
 
 Think of this as your project's control center - everything visible at a glance:
 
@@ -216,7 +216,7 @@ All three are being built as one coordinated change!
 - Identify technical debt (REFACTOR_ tasks)
 - One-click access to any component's details
 
-### 6. Your Project's Flight Recorder (noderr_log.md)
+### 6. Your Project's Flight Recorder (noderr/noderr_log.md)
 
 Think of this as your project's **permanent memory** - a detailed history of every important decision, change, and event:
 
@@ -283,7 +283,7 @@ The Loop is how your AI transforms from a chaotic coder into a systematic engine
 
 #### 🚀 Starting Every Session
 
-**Always Begin With:** `ND__Start_Work_Session.md`
+**Always Begin With:** `noderr/prompts/ND__Start_Work_Session.md`
 - AI reads the log (what happened before)
 - Checks the tracker (what's the current state)
 - Proposes the next logical task
@@ -292,7 +292,7 @@ The Loop is how your AI transforms from a chaotic coder into a systematic engine
 #### 🔄 The 4-Step Loop
 
 **Step 1A: Impact Analysis** 
-*Prompt:* `ND__[LOOP_1A]__Propose_Change_Set.md`
+*Prompt:* `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -303,14 +303,14 @@ AI: "This requires changing:
 **⏸️ PAUSES** - You approve the full scope
 
 **Step 1B: Blueprint Creation**
-*Prompt:* `ND__[LOOP_1B]__Draft_Specs.md`
+*Prompt:* `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`
 - AI marks everything as Work-In-Progress
 - Creates detailed specs for EVERY piece
 - Not just "what" but "how" and "why"
 **⏸️ PAUSES** - You review the blueprints
 
 **Step 2: Build Everything**
-*Prompt:* `ND__[LOOP_2]__Implement_Change_Set.md`
+*Prompt:* `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`
 
 This is where the magic happens:
 1. **Context Assembly** - AI reads only what it needs:
@@ -333,7 +333,7 @@ This is where the magic happens:
 **⏸️ PAUSES** - You authorize finalization
 
 **Step 3: Document & Commit**
-*Prompt:* `ND__[LOOP_3]__Finalize_And_Commit.md`
+*Prompt:* `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`
 - Updates specs to match what was built
 - Logs all decisions and discoveries
 - Creates REFACTOR_ tasks for any debt
@@ -530,7 +530,7 @@ It's the difference between hoping code works and knowing it works.
 
 ### 10. The Environment Context - Teaching AI Your World
 
-The `environment_context.md` file is what makes Noderr work anywhere - it's the bridge between Noderr's universal instructions and your specific environment.
+The `noderr/environment_context.md` file is what makes Noderr work anywhere - it's the bridge between Noderr's universal instructions and your specific environment.
 
 #### The Genius Design
 
@@ -552,7 +552,7 @@ This file has three roles:
 
 1. **During installation** → The AI reads the template instructions
 2. **AI runs discovery** → Tests every command in the actual environment
-3. **AI creates filled version** → `environment_context_replit_nodejs.md`
+3. **AI creates filled version** → `noderr/environment_context_replit_nodejs.md`
 4. **AI uses it forever** → Now knows exactly how to work in your setup
 
 #### What Gets Documented
@@ -589,7 +589,7 @@ port_check:
 
 #### Real-World Example
 
-When the Loop says "perform ARC Verification", the AI consults environment_context.md:
+When the Loop says "perform ARC Verification", the AI consults noderr/environment_context.md:
 
 ```yaml
 # For a Node.js project on Replit:
@@ -609,13 +609,13 @@ The same Noderr Loop works perfectly in both environments!
 
 #### The Critical Step
 
-This is why filling out `environment_context.md` is critical during installation - without it, the AI is like a skilled builder arriving at a job site without knowing whether they're in New York or Tokyo. Different places have different tools, different rules, different ways of doing things.
+This is why filling out `noderr/environment_context.md` is critical during installation - without it, the AI is like a skilled builder arriving at a job site without knowing whether they're in New York or Tokyo. Different places have different tools, different rules, different ways of doing things.
 
 This isn't overengineering - it's acknowledging the messy reality that every development environment is unique. By documenting it once during the installation process, you prevent countless failed commands and confused debugging sessions.
 
-### 11. The Project Constitution (noderr_project.md) - Your Living PRD
+### 11. The Project Constitution (noderr/noderr_project.md) - Your Living PRD
 
-The `noderr_project.md` file is your project's constitution - a comprehensive PRD (Product Requirements Document) that evolves with your project. Unlike traditional PRDs that gather dust, this one is actively used by the AI in every session.
+The `noderr/noderr_project.md` file is your project's constitution - a comprehensive PRD (Product Requirements Document) that evolves with your project. Unlike traditional PRDs that gather dust, this one is actively used by the AI in every session.
 
 #### What Makes This Special
 
@@ -703,7 +703,7 @@ The AI immediately adapts to all changes!
 
 #### Real Example Impact
 
-Without noderr_project.md:
+Without noderr/noderr_project.md:
 ```javascript
 // AI might write:
 app.get('/getUsers', (req, res) => {
@@ -711,7 +711,7 @@ app.get('/getUsers', (req, res) => {
 })
 ```
 
-With noderr_project.md:
+With noderr/noderr_project.md:
 ```javascript
 // AI writes (following all standards):
 app.get('/api/v1/users', authenticate, authorize('read:users'), async (req, res, next) => {
@@ -739,13 +739,13 @@ It's like the difference between hiring a coder and hiring a CTO who understands
 
 ### 12. The Planning Directory - Strategic Thinking Space
 
-The `planning/` directory is where strategic analysis happens before code begins. It's your project's "think tank" powered by specialized prompts.
+The `noderr/planning/` directory is where strategic analysis happens before code begins. It's your project's "think tank" powered by specialized prompts.
 
 #### What Lives Here
 
 **Feature Breakdowns:**
 ```markdown
-planning/
+noderr/planning/
 ├── feature_breakdown_20250115_093000.md
 ├── payment_integration_analysis.md
 └── scaling_strategy_v2.md
@@ -762,7 +762,7 @@ These documents contain:
 
 **Step 1: Raw Ideas → Structured Analysis**
 
-You use: `ND__Feature_Idea_Breakdown.md`
+You use: `noderr/prompts/ND__Feature_Idea_Breakdown.md`
 
 ```
 You: "Here are my ideas:
@@ -771,7 +771,7 @@ You: "Here are my ideas:
      - Dark mode
      - API rate limiting"
 
-AI: Creates → planning/feature_breakdown_20250115_093000.md
+AI: Creates → noderr/planning/feature_breakdown_20250115_093000.md
 ```
 
 The AI analyzes EACH idea and produces:
@@ -824,15 +824,15 @@ Start with API Rate Limiting - high security impact, low effort.
 #### How It Feeds Into Development
 
 1. **Strategic Planning** → Use Feature Breakdown prompt
-2. **AI creates planning doc** → Saved in `planning/`
+2. **AI creates planning doc** → Saved in `noderr/planning/`
 3. **Review & decide** → Pick top priority feature
 4. **Start the Loop** → "Primary Goal: Implement API rate limiting"
 5. **AI references plan** → Already knows the NodeIDs and approach
 
 #### Other Planning Prompts
 
-- **`ND__Pre_Flight_Feature_Analysis.md`** - Deep dive into ONE specific feature before building
-- **`ND__Major_Mid_Project_Feature_Addition.md`** - When adding big features to existing projects
+- **`noderr/prompts/ND__Pre_Flight_Feature_Analysis.md`** - Deep dive into ONE specific feature before building
+- **`noderr/prompts/ND__Major_Mid_Project_Feature_Addition.md`** - When adding big features to existing projects
 
 #### Why Planning Matters
 
