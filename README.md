@@ -6,10 +6,10 @@ Your AI already knows how to code. Noderr teaches it how to engineer.
 
 ## Documentation
 
-- **[Getting Started](./noderr/docs/noderr_getting_started.md)** - Complete user guide and first steps
-- **[Understanding Noderr](./noderr/docs/understanding-noderr.md)** - Deep dive into concepts and architecture
-- **[Prompts Guide](./noderr/docs/noderr_prompts_guide.md)** - Command reference for all workflows
-- **[Visual Guide](./noderr/docs/noderr_guide.md)** - Visual roadmap of files and structure
+- **[Getting Started](./docs/noderr_getting_started.md)** - Complete user guide and first steps
+- **[Understanding Noderr](./docs/understanding-noderr.md)** - Deep dive into concepts and architecture
+- **[Prompts Guide](./docs/noderr_prompts_guide.md)** - Command reference for all workflows
+- **[Visual Guide](./docs/noderr_guide.md)** - Visual roadmap of files and structure
 - **[Installation](./INSTALL.md)** - Quick setup instructions
 
 ## What is Noderr?
@@ -294,7 +294,7 @@ Unlike traditional tools, Noderr is installed AFTER you build your initial proto
 4. **Run Install prompt** - `noderr/prompts/ND__Install_And_Reconcile.md`
 5. **Run System Audit** - `noderr/prompts/ND__Post_Installation_Audit.md`
 
-See [Getting Started](./noderr/docs/noderr_getting_started.md) for detailed instructions.
+See [Getting Started](./docs/noderr_getting_started.md) for detailed instructions.
 
 ---
 

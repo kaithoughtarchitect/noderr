@@ -65,9 +65,9 @@ your-project/
 
 ## Documentation
 
-- **Quick Start**: See [Getting Started Guide](./noderr/docs/noderr_getting_started.md)
-- **Concepts**: See [Understanding Noderr](./noderr/docs/understanding-noderr.md)
-- **Commands**: See [Prompts Guide](./noderr/docs/noderr_prompts_guide.md)
+- **Quick Start**: See [Getting Started Guide](./docs/noderr_getting_started.md)
+- **Concepts**: See [Understanding Noderr](./docs/understanding-noderr.md)
+- **Commands**: See [Prompts Guide](./docs/noderr_prompts_guide.md)
 
 ## Troubleshooting
 
@@ -87,7 +87,7 @@ your-project/
 
 For issues or questions:
 - Check the documentation links above
-- Review the [Getting Started Guide](./noderr/docs/noderr_getting_started.md) for detailed instructions
+- Review the [Getting Started Guide](./docs/noderr_getting_started.md) for detailed instructions
 - Open an issue on GitHub
 
 ---
