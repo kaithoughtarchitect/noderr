@@ -42,7 +42,7 @@ This approach ensures Noderr documents what you ACTUALLY built, not just what yo
 
 ### Download Noderr
 
-1. **Download the latest release:** [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
+1. **Download the latest release:** [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/download/v1.9.0/noderr.starter.zip)
 2. **Keep the ZIP file handy** - you'll extract it AFTER your initial build
 
 The ZIP contains:
