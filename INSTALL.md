@@ -11,7 +11,7 @@ Before installing Noderr:
 
 ### 1. Download Noderr
 
-Download the latest release: [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/latest/download/noderr-starter.zip)
+Download the latest release: [noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/download/v1.9.0/noderr.starter.zip)
 
 ### 2. Add to Your Project
 
