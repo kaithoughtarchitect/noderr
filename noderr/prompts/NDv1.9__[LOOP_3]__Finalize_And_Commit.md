@@ -25,11 +25,16 @@ The implementation and verification for the specified `WorkGroupID` is complete.
     *   Conduct the Flowchart Consistency Check. If you find a simple discrepancy, fix `noderr_architecture.md` directly. If it's complex, document it in the log.
 
 3.  **Log Operation (Step 9):**
-    *   Create the single, comprehensive `ARC-Completion` log entry in `noderr_log.md`. Ensure it includes the flowchart check outcome and any unforeseen ripple effects. Use an environment-sourced timestamp.
+    *   Create the single, comprehensive `ARC-Completion` log entry in `noderr_log.md`. Ensure it includes the flowchart check outcome, any unforeseen ripple effects, and project overview updates. Use an environment-sourced timestamp.
 
-4.  **Update Tracker, Schedule Debt, & Commit (Step 10):**
+4.  **Update Tracker, Schedule Debt, & Check Project Overview (Step 10):**
     *   **Update Tracker:** In `noderr_tracker.md`, mark all nodes in the `WorkGroupID` as `[VERIFIED]` and clear their `WorkGroupID`.
     *   **Schedule Debt:** Perform the "Technical Debt Scheduling" step. For any nodes with documented debt, create new `REFACTOR_` tasks in the tracker.
+    *   **Update Project Overview:** Check if this Change Set impacts `noderr_project.md`:
+        - New major features → Update "Key Features" section
+        - New libraries/tools → Update "Technology Stack" table
+        - Architecture changes → Update "Architecture Decisions"
+        - Scope expansion → Update "Scope & Key Features"
     *   **Final Commit:** Perform the **Final Implementation Commit** with a descriptive `feat:` message.
 
 ### Final Report
@@ -38,14 +43,15 @@ The implementation and verification for the specified `WorkGroupID` is complete.
 
 **Example Response Format:**
 > "Finalization for `WorkGroupID: [ID]` is complete.
-> 
+>
 > *   All specifications have been updated to the 'as-built' state.
 > *   The architecture flowchart has been checked and updated.
 > *   A complete `ARC-Completion` entry has been logged.
 > *   The tracker is updated, and all nodes are now `[VERIFIED]`.
+> *   **Project Overview Updates:** [None | Updated sections: Technology Stack, Key Features]
 > *   The final `feat:` commit has been made to version control.
 > *   **New Refactor Tasks Created:** [List any REFACTOR_ nodes created, or 'None'].
-> 
+>
 > This Change Set is now fully complete and documented. Awaiting next `PrimaryGoal` via a new Work Session."
 
 ### Final State

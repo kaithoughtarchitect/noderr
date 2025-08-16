@@ -43,21 +43,27 @@ The Change Set has been confirmed. Your first action is to **update the `noderr_
 
 **Example Response Format:**
 > "Authorization received. The `noderr_tracker.md` has been updated and all nodes in `WorkGroupID: [ID]` are now marked as `[WIP]`.
-> 
+>
 > The specification drafting and refinement phase is also complete. The following files are now ready for your review in the `specs/` directory:
-> 
+>
 > *   **New Specs Created:**
 >     *   `specs/[NodeID_A].md`
 >     *   `specs/[NodeID_B].md`
 > *   **Existing Specs Modified:**
 >     *   `specs/[NodeID_C].md`
 >     *   `specs/[NodeID_D].md`
-> 
-> Please review these files at your convenience. Your approval via the `[LOOP 2]` prompt will authorize me to begin implementation."
+>
+> Please review these files at your convenience. Based on a Change Set size of [Number] nodes, I recommend we proceed to [Spec Verification Checkpoint | LOOP 2A]. Your approval via the next prompt will authorize the next step."
 
-### Step 4: Pause for Approval
+### Step 4: Verification Recommendation
+*   **Assess the Change Set size.**
+    *   If the Change Set involves **10 or more NodeIDs**, recommend that the Orchestrator runs the **`NDv1.9__Spec_Verification_Checkpoint.md`** prompt next.
+    *   If the Change Set is **5-9 NodeIDs**, note that the checkpoint is optional but suggested.
+    *   For **<5 NodeIDs**, proceed directly to Loop 2.
+
+### Step 5: Pause for Approval
 
 *   **Your work for this prompt is now complete.**
-*   You will now **PAUSE** and await the Orchestrator's next command, which will be **`NDv1.9__[LOOP_2]__Implement_Change_Set.md`**. Do not take any further action.
+*   You will now **PAUSE** and await the Orchestrator's next command. This will either be the **Spec Verification Checkpoint** for large change sets, or **`NDv1.9__[LOOP_2A]__Implement_Change_Set.md`** to begin implementation. Do not take any further action.
 
 ---
