@@ -32,7 +32,7 @@ graph TD
     end
 
     subgraph "Workflow Tools"
-        Prompts[noderr/prompts/<br/>ND__Feature_Idea_Breakdown.md]
+        Prompts[noderr/prompts/<br/>NDv1.9__Spec_Verification_Checkpoint.md<br/>NDv1.9__[LOOP_2B]__Verify_Implementation.md]
     end
 
     %% User interactions
@@ -136,6 +136,10 @@ The brain of your operation—five essential files that orchestrate strategy.
 
 ### The Noderr Lifecycle
 
+This diagram shows the updated, verification-driven lifecycle.
+
+*(Note: This is a textual representation of the workflow. The visual diagram may not be updated.)*
+
 ```mermaid
 graph LR
     Start([Start Work Session]) --> Goal{Provide<br/>PrimaryGoal}
@@ -143,8 +147,14 @@ graph LR
     L1A --> Review1{Review<br/>Change Set}
     Review1 -->|Approved| L1B[LOOP 1B<br/>Draft Specs]
     L1B --> Review2{Review<br/>Specs}
-    Review2 -->|Approved| L2[LOOP 2<br/>Implement & Test]
-    L2 --> L3[LOOP 3<br/>Finalize & Commit]
+    Review2 -->|Approved| Gate1{Spec<br/>Verification<br/>Checkpoint?};
+    Gate1 --> |Yes| VerifySpecs[Verify Specs] --> L2A;
+    Gate1 --> |No| L2A;
+    L1B --> L2A[LOOP 2A<br/>Implement]
+    L2A --> L2B[LOOP 2B<br/>Audit]
+    L2B --> Review3{Review<br/>Audit}
+    Review3 --> |Approved| L3[LOOP 3<br/>Finalize & Commit]
+    Review3 --> |Rejected| L2A
     L3 --> Complete([Feature Complete])
     Complete --> Start
 
@@ -153,24 +163,29 @@ graph LR
     style Goal fill:#FF9800,color:#fff
     style Review1 fill:#FF9800,color:#fff
     style Review2 fill:#FF9800,color:#fff
+    style Review3 fill:#FF9800,color:#fff
+    style Gate1 fill:#E91E63,color:#fff
     style L1A fill:#2196F3,color:#fff
     style L1B fill:#2196F3,color:#fff
-    style L2 fill:#2196F3,color:#fff
+    style L2A fill:#2196F3,color:#fff
+    style L2B fill:#2196F3,color:#fff
     style L3 fill:#2196F3,color:#fff
 ```
 
 **Phase 1: Genesis (New Project)**
 1.  **Prepare your vision** → Create blueprint, project overview, and architecture
 2.  **Build initial prototype** → AI creates the first version
-3.  **`noderr/prompts/ND__Install_And_Reconcile.md`** → Install Noderr and reconcile with actual build
+3.  **`noderr/prompts/NDv1.9__Install_And_Reconcile.md`** → Install Noderr and reconcile with actual build
 
 **Phase 2: Development (The Loop)**
-1.  **`noderr/prompts/ND__Start_Work_Session.md`** → Agent syncs up and is ready for a `PrimaryGoal`.
+1.  **`noderr/prompts/NDv1.9__Start_Work_Session.md`** → Agent syncs up and is ready for a `PrimaryGoal`.
 2.  **You provide a `PrimaryGoal`**.
-3.  **The 4-Step Loop Begins:**
+3.  **The Verification-Driven Loop Begins:**
     *   `noderr/prompts/[LOOP_1A] Propose Change Set`
     *   `noderr/prompts/[LOOP_1B] Draft Specs`
-    *   `noderr/prompts/[LOOP_2] Implement Change Set`
+    *   (Optional) `noderr/prompts/Spec_Verification_Checkpoint`
+    *   `noderr/prompts/[LOOP_2A] Implement Change Set`
+    *   (Mandatory) `noderr/prompts/[LOOP_2B] Verify Implementation`
     *   `noderr/prompts/[LOOP_3] Finalize & Commit`
 4.  Repeat for the next `PrimaryGoal`.
 

@@ -76,12 +76,12 @@ You need to create three foundational documents. There are many ways to approach
    - Provides comprehensive strategic foundation for your project
 
 2. **Project Overview** (`noderr/noderr_project.md`)
-   - Can use `noderr/prompts/ND__Project_Generator.md` prompt (if available)
+   - Can use `noderr/prompts/NDv1.9__Project_Generator.md` prompt (if available)
    - Or create through conversation based on your blueprint
    - Defines technology stack, standards, and scope
 
 3. **Architecture Diagram** (`noderr/noderr_architecture.md`)
-   - Can use `noderr/prompts/ND__Architecture_Generator.md` prompt (if available)
+   - Can use `noderr/prompts/NDv1.9__Architecture_Generator.md` prompt (if available)
    - Or design through discussion using your blueprint as reference
    - Creates the technical system design
 
@@ -137,11 +137,11 @@ your-project/
 
 ### Step 4: Run Install and Reconcile
 Give your AI this command:
-> **`noderr/prompts/ND__Install_And_Reconcile.md`**
+> **`noderr/prompts/NDv1.9__Install_And_Reconcile.md`**
 
 ### Step 5: Verify System Readiness
 After installation, run a comprehensive audit:
-> **`noderr/prompts/ND__Post_Installation_Audit.md`**
+> **`noderr/prompts/NDv1.9__Post_Installation_Audit.md`**
 
 This will:
 - Verify all Noderr components are working
@@ -151,7 +151,7 @@ This will:
 
 ### Step 6: Begin Systematic Development
 Once audit shows 100% readiness:
-> **`noderr/prompts/ND__Start_Work_Session.md`**
+> **`noderr/prompts/NDv1.9__Start_Work_Session.md`**
 
 You're now ready to use the Noderr loop for all future development!
 
@@ -159,7 +159,7 @@ You're now ready to use the Noderr loop for all future development!
 
 ## The Heart of Noderr: The Four-Step Loop
 
-Every feature you build follows this robust, structured loop:
+Every feature you build follows this robust, structured, and verification-driven loop:
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -170,9 +170,11 @@ Every feature you build follows this robust, structured loop:
 │  [LOOP 1A] Propose Change Set                          │
 │       ↓ (Agent analyzes impact, you approve)           │
 │  [LOOP 1B] Draft Specs                                 │
-│       ↓ (Agent writes specs, you approve)              │
-│  [LOOP 2] Implement Change Set                         │
-│       ↓ (Agent builds & tests the entire set)          │
+│       ↓ (Optional: Spec Verification for large sets)   │
+│  [LOOP 2A] Implement Change Set                        │
+│       ↓ (Agent builds & runs initial tests)            │
+│  [LOOP 2B] Verify Implementation                       │
+│       ↓ (Agent audits code vs. spec, reports %)        │
 │  [LOOP 3] Finalize & Commit                            │
 │       ↓ (Agent updates docs, logs, and commits)        │
 │                                                        │
@@ -182,19 +184,24 @@ Every feature you build follows this robust, structured loop:
 
 ### What Each Step Does:
 
-**`noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`**
+**`noderr/prompts/NDv1.9__[LOOP_1A]__Propose_Change_Set.md`**
 *   **Agent's Job:** Analyzes the `PrimaryGoal` and identifies every single new or existing node that will be affected.
 *   **Your Job:** Review and approve the proposed Change Set.
 
-**`noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`**
+**`noderr/prompts/NDv1.9__[LOOP_1B]__Draft_Specs.md`**
 *   **Agent's Job:** Marks all nodes as `[WIP]` and writes detailed specifications.
 *   **Your Job:** Review the specs in the `noderr/specs/` directory.
+*   **Quality Gate:** For large Change Sets (≥10 NodeIDs), the AI will recommend running a `Spec_Verification_Checkpoint` to ensure quality before implementation.
 
-**`noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`**
-*   **Agent's Job:** Writes all code, runs tests, and verifies against specs.
+**`noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md`**
+*   **Agent's Job:** Writes all code, runs tests, and performs an initial verification against specs.
 *   **Your Job:** Monitor progress, available for any blockers.
 
-**`noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`**
+**`noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md`**
+*   **Agent's Job:** Performs a **read-only audit** comparing the implemented code to the specifications. It reports a factual completion percentage (e.g., "85% complete").
+*   **Your Job:** Decide whether to fix the gaps, accept the work, or modify the specs.
+
+**`noderr/prompts/NDv1.9__[LOOP_3]__Finalize_And_Commit.md`**
 *   **Agent's Job:** Updates specs to "as-built" state, logs work, commits.
 *   **Your Job:** Nothing - this step is fully automated.
 
@@ -205,30 +212,46 @@ Every feature you build follows this robust, structured loop:
 ### Starting Every Work Session
 
 Always begin with:
-> **`noderr/prompts/ND__Start_Work_Session.md`**
+> **`noderr/prompts/NDv1.9__Start_Work_Session.md`**
 
 The agent will:
 - Sync with your project state
 - Review recent changes
 - Suggest the next logical task
 
-### Building a New Feature (Example)
+### Building a New Feature (Example with Quality Gates)
+
+This example shows how the new quality gates work with a large feature.
 
 ```
-You: noderr/prompts/ND__Start_Work_Session.md
+You: noderr/prompts/NDv1.9__Start_Work_Session.md
 Agent: "Ready for the next PrimaryGoal."
 
-You: "Primary Goal: Add password reset functionality"
+You: "Primary Goal: Implement a full e-commerce checkout flow"
 Agent: [Starts LOOP 1A]
-      "To add password reset, I need to:
-      - NEW: UI_PasswordResetForm, API_ResetPassword, EMAIL_ResetTemplate
-      - MODIFY: UI_LoginPage (add 'forgot password' link)
-      - MODIFY: DB_Users (add reset_token field)
-      
-      Approve this Change Set?"
+      "This is a large feature affecting 12 NodeIDs. [...] Approve this Change Set?"
 
 You: "I approve"
-Agent: [Continues through the loop...]
+Agent: [Starts LOOP 1B]
+      "...Drafted specs for all 12 NodeIDs. Based on a Change Set size of 12, I recommend we proceed to the Spec Verification Checkpoint."
+
+You: noderr/prompts/NDv1.9__Spec_Verification_Checkpoint.md
+Agent: "Specification Verification Checkpoint complete. All specs are present and meet quality standards. Ready to proceed."
+
+You: noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md
+Agent: [Implements all 12 nodes...]
+      "Implementation and Initial Verification for WorkGroupID [ID] is complete. The Change Set is now ready for the Loop 2B Implementation Completeness Audit."
+
+You: noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md
+Agent: "Audit complete.
+      - Overall Implementation Completion: 80%
+      - Fully Implemented: 8/12 nodes
+      - Partially Implemented: 2/12 nodes (missing error handling)
+      - Not Implemented: 2/12 nodes (payment gateway timeout logic)
+      Awaiting Orchestrator decision."
+
+You: "Return to Loop 2 to implement the missing requirements."
+Agent: [Returns to implementation to fix gaps...]
 ```
 
 ---
@@ -238,7 +261,7 @@ Agent: [Continues through the loop...]
 ### Quick Fixes (Micro-Fix)
 For tiny changes (typos, small CSS tweaks):
 ```
-noderr/prompts/ND__Execute_Micro_Fix.md
+noderr/prompts/NDv1.9__Execute_Micro_Fix.md
 
 Target: UI_LoginForm
 Issue: Fix typo in button text "Sigin" -> "Sign in"
@@ -247,7 +270,7 @@ Issue: Fix typo in button text "Sigin" -> "Sign in"
 ### Handling Bugs
 When something is broken:
 ```
-noderr/prompts/ND__Handle_Critical_Issue.md
+noderr/prompts/NDv1.9__Handle_Critical_Issue.md
 
 Affected Component: API_Authentication
 Severity: High
@@ -257,7 +280,7 @@ Issue Description: Login returns 500 error after 5 failed attempts
 ### Code Cleanup (Refactoring)
 To improve existing code:
 ```
-noderr/prompts/ND__Refactor_Node.md
+noderr/prompts/NDv1.9__Refactor_Node.md
 
 Target NodeID: API_UserSearch
 Refactoring Goal: Optimize database queries to reduce N+1 problem
@@ -266,7 +289,7 @@ Refactoring Goal: Optimize database queries to reduce N+1 problem
 ### Planning Features
 Before building, analyze ideas:
 ```
-noderr/prompts/ND__Feature_Idea_Breakdown.md
+noderr/prompts/NDv1.9__Feature_Idea_Breakdown.md
 
 Here are my feature ideas:
 - Add social login (Google, GitHub)
@@ -282,31 +305,33 @@ Here are my feature ideas:
 ### Initial Setup
 | Prompt | Purpose | When to Use |
 |:-------|:--------|:------------|
-| `noderr/prompts/ND__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
+| `noderr/prompts/NDv1.9__Install_And_Reconcile.md` | Install Noderr after initial build | Once, after extracting ZIP |
 
 ### Core Development Loop
 | Prompt | Purpose | When to Use |
 |:-------|:--------|:------------|
-| `noderr/prompts/ND__Start_Work_Session.md` | Sync AI with project | Beginning of each session |
-| `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md` | Analyze feature impact | Automatic after PrimaryGoal |
-| `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md` | Create blueprints | After approving Change Set |
-| `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md` | Build and test | After approving specs |
-| `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md` | Document and commit | After implementation passes |
+| `noderr/prompts/NDv1.9__Start_Work_Session.md` | Sync AI with project | Beginning of each session |
+| `noderr/prompts/NDv1.9__[LOOP_1A]__Propose_Change_Set.md` | Analyze feature impact | Automatic after PrimaryGoal |
+| `noderr/prompts/NDv1.9__[LOOP_1B]__Draft_Specs.md` | Create blueprints | After approving Change Set |
+| `noderr/prompts/NDv1.9__Spec_Verification_Checkpoint.md` | **Quality Gate:** Verify specs are complete | Recommended for Change Sets ≥10 nodes |
+| `noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md` | Build and test | After approving specs (or spec verification) |
+| `noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md` | **Quality Gate:** Audit implementation | After Loop 2A is complete |
+| `noderr/prompts/NDv1.9__[LOOP_3]__Finalize_And_Commit.md` | Document and commit | After implementation passes audit |
 
 ### Quick Actions
 | Prompt | Use Case | Typical Duration |
 |:-------|:---------|:-----------------|
-| `noderr/prompts/ND__Execute_Micro_Fix.md` | Typos, small tweaks | < 5 minutes |
-| `noderr/prompts/ND__Handle_Critical_Issue.md` | Bugs, broken features | Varies by severity |
-| `noderr/prompts/ND__Refactor_Node.md` | Code quality improvements | 15-60 minutes |
+| `noderr/prompts/NDv1.9__Execute_Micro_Fix.md` | Typos, small tweaks | < 5 minutes |
+| `noderr/prompts/NDv1.9__Handle_Critical_Issue.md` | Bugs, broken features | Varies by severity |
+| `noderr/prompts/NDv1.9__Refactor_Node.md` | Code quality improvements | 15-60 minutes |
 
 ### Planning & Analysis
 | Prompt | Purpose | Output |
 |:-------|:--------|:-------|
-| `noderr/prompts/ND__Feature_Idea_Breakdown.md` | Prioritize multiple features | Markdown report in noderr/planning/ |
-| `noderr/prompts/ND__Pre_Flight_Feature_Analysis.md` | Deep analysis of one feature | Detailed implementation plan |
-| `noderr/prompts/ND__Architecture_Health_Review.md` | Full project audit | Health score and action items |
-| `noderr/prompts/ND__Advanced_Security_Audit.md` | OWASP-based security check | Vulnerability report |
+| `noderr/prompts/NDv1.9__Feature_Idea_Breakdown.md` | Prioritize multiple features | Markdown report in noderr/planning/ |
+| `noderr/prompts/NDv1.9__Pre_Flight_Feature_Analysis.md` | Deep analysis of one feature | Detailed implementation plan |
+| `noderr/prompts/NDv1.9__Architecture_Health_Review.md` | Full project audit | Health score and action items |
+| `noderr/prompts/NDv1.9__Advanced_Security_Audit.md` | OWASP-based security check | Vulnerability report |
 
 ---
 
@@ -329,7 +354,7 @@ Here are my feature ideas:
 **Symptoms:** AI suggests already-completed tasks or misunderstands architecture
 
 **Solutions:**
-- Run `noderr/prompts/ND__Start_Work_Session.md` to resync
+- Run `noderr/prompts/NDv1.9__Start_Work_Session.md` to resync
 - Check all NodeIDs in tracker have spec files
 - Verify architecture diagram matches implementation
 - Ensure recent changes were committed
@@ -389,7 +414,7 @@ When stuck, check these in order:
 
 1. Prepare your three foundational documents
 2. Build your initial prototype
-3. Install Noderr with `noderr/prompts/ND__Install_And_Reconcile.md`
+3. Install Noderr with `noderr/prompts/NDv1.9__Install_And_Reconcile.md`
 4. Start systematic development!
 
 Remember: The first project might feel slow as you learn the workflow, but each subsequent project becomes faster and more natural. Noderr's true power emerges as projects grow in complexity.

@@ -283,34 +283,31 @@ The Loop is how your AI transforms from a chaotic coder into a systematic engine
 
 #### 🚀 Starting Every Session
 
-**Always Begin With:** `noderr/prompts/ND__Start_Work_Session.md`
+**Always Begin With:** `noderr/prompts/NDv1.9__Start_Work_Session.md`
 - AI reads the log (what happened before)
 - Checks the tracker (what's the current state)
 - Proposes the next logical task
 - **You:** Confirm or provide a different goal
 
-#### 🔄 The 4-Step Loop
+#### 🔄 The Noderr Workflow
 
 **Step 1A: Impact Analysis** 
-*Prompt:* `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`
-```
-You: "Add password reset"
-AI: "This requires changing:
-     - NEW: UI_ResetForm, API_ResetPassword
-     - MODIFY: UI_LoginPage (add 'forgot password' link)
-     - MODIFY: DB_Users (add reset_token field)"
-```
-**⏸️ PAUSES** - You approve the full scope
+*Prompt:* `noderr/prompts/NDv1.9__[LOOP_1A]__Propose_Change_Set.md`
+- You provide a goal (e.g., "Add password reset").
+- The AI analyzes the system and proposes a "Change Set" of all affected NodeIDs.
+**⏸️ PAUSES** - You approve the full scope.
 
 **Step 1B: Blueprint Creation**
-*Prompt:* `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`
-- AI marks everything as Work-In-Progress
-- Creates detailed specs for EVERY piece
-- Not just "what" but "how" and "why"
-**⏸️ PAUSES** - You review the blueprints
+*Prompt:* `noderr/prompts/NDv1.9__[LOOP_1B]__Draft_Specs.md`
+- The AI drafts detailed specifications for every NodeID in the Change Set.
+**⏸️ PAUSES** - You review the blueprints.
 
-**Step 2: Build Everything**
-*Prompt:* `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`
+**Quality Gate 1: Specification Verification (Optional)**
+*Prompt:* `noderr/prompts/NDv1.9__Spec_Verification_Checkpoint.md`
+- For large Change Sets (≥10 nodes), this read-only check ensures all specs are complete and logical *before* implementation starts.
+
+**Step 2A: Implementation**
+*Prompt:* `noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md`
 
 This is where the magic happens:
 1. **Context Assembly** - AI reads only what it needs:
@@ -323,22 +320,17 @@ This is where the magic happens:
    - All UI + API + DB changes together
    - Maintains consistency
 
-3. **ARC Verification** - The quality gates:
-   - ✅ Does it work? (functionality)
-   - ✅ Does it handle errors? (reliability)
-   - ✅ Is it secure? (security)
-   - ✅ Can others understand it? (maintainability)
-   - If anything fails → Fix and re-verify
+3. **Initial ARC Verification** - The AI performs a first pass on the quality gates, checking against the spec's criteria.
 
-**⏸️ PAUSES** - You authorize finalization
+**Quality Gate 2: Implementation Audit**
+*Prompt:* `noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md`
+- A mandatory, read-only audit where the AI compares the code to the specs.
+- It reports a true completion percentage (e.g., "85% complete").
+**⏸️ PAUSES** - You decide whether to accept the work or send it back for completion.
 
 **Step 3: Document & Commit**
-*Prompt:* `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`
-- Updates specs to match what was built
-- Logs all decisions and discoveries
-- Creates REFACTOR_ tasks for any debt
-- Updates tracker statuses
-- Makes the git commit
+*Prompt:* `noderr/prompts/NDv1.9__[LOOP_3]__Finalize_And_Commit.md`
+- The AI updates specs to an "as-built" state, logs the work, updates the tracker, and makes the final git commit.
 **✅ COMPLETE**
 
 #### 💡 Why Each Step Matters
@@ -370,10 +362,36 @@ You're like an architect reviewing plans:
 - **Start**: Provide clear goals
 - **Loop 1A**: Approve the scope
 - **Loop 1B**: Approve the blueprints
-- **Loop 2**: Authorize implementation
+- **Loop 2A**: Authorize implementation
+- **Loop 2B**: Review the audit and decide next steps
 - **Loop 3**: Everything happens automatically
 
 The AI does the heavy lifting, but you maintain control at every critical decision point.
+
+### 7.5 Quality Gates - The Trust But Verify System
+
+Noderr operates on a "trust but verify" principle, enforced by two critical quality gates that prevent common AI development failures.
+
+#### Quality Gate 1: Specification Verification Checkpoint
+
+- **When:** After drafting specs (Loop 1B), recommended for Change Sets of 10+ NodeIDs.
+- **What:** A read-only check to ensure every specification is complete, logical, and has clear verification criteria.
+- **Why:** It prevents the AI from starting a large implementation based on flawed or incomplete blueprints, which is a major source of wasted effort.
+
+#### Quality Gate 2: Implementation Audit (Loop 2B)
+
+- **When:** Always, after the AI reports implementation is "complete" (Loop 2A).
+- **What:** A mandatory, read-only audit where the AI systematically compares the written code against the requirements in the specification files.
+- **Why:** This is the most critical gate. It provides an objective, quantitative measure of completeness. It catches gaps, unimplemented error handling, and deviations from the plan, preventing "hallucinated" or incomplete features from being committed.
+
+**Example: Catching Incomplete Work**
+> **AI in Loop 2A:** "Implementation is complete!"
+>
+> **AI in Loop 2B (Audit):** "Audit reveals only 7 out of 10 requirements were met (70% completion). The payment timeout logic and two security validation criteria were not implemented."
+>
+> **You (Orchestrator):** "Return to Loop 2A to complete the missing requirements."
+
+These gates ensure that what is claimed to be done is actually done, and that what is being built is based on solid plans.
 
 ### 8. Change Sets & WorkGroupIDs - Coordinated Development
 
@@ -701,6 +719,8 @@ As your project evolves:
 
 The AI immediately adapts to all changes!
 
+**Note on Maintenance:** The Noderr Loop is designed to keep this document current. Step 10.3 of the main loop (`noderr/noderr_loop.md`) includes a check to see if a completed Change Set impacts the project's scope, technology, or architecture, prompting an update to this file as part of the finalization process.
+
 #### Real Example Impact
 
 Without noderr/noderr_project.md:
@@ -762,7 +782,7 @@ These documents contain:
 
 **Step 1: Raw Ideas → Structured Analysis**
 
-You use: `noderr/prompts/ND__Feature_Idea_Breakdown.md`
+You use: `noderr/prompts/NDv1.9__Feature_Idea_Breakdown.md`
 
 ```
 You: "Here are my ideas:
@@ -831,8 +851,8 @@ Start with API Rate Limiting - high security impact, low effort.
 
 #### Other Planning Prompts
 
-- **`noderr/prompts/ND__Pre_Flight_Feature_Analysis.md`** - Deep dive into ONE specific feature before building
-- **`noderr/prompts/ND__Major_Mid_Project_Feature_Addition.md`** - When adding big features to existing projects
+- **`noderr/prompts/NDv1.9__Pre_Flight_Feature_Analysis.md`** - Deep dive into ONE specific feature before building
+- **`noderr/prompts/NDv1.9__Major_Mid_Project_Feature_Addition.md`** - When adding big features to existing projects
 
 #### Why Planning Matters
 
