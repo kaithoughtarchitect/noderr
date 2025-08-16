@@ -92,6 +92,18 @@ The Orchestrator will initiate this loop by providing you with a `PrimaryGoal`.
 3.3. Present the drafted/refined spec(s) to the Orchestrator for approval. **PAUSE and await Orchestrator approval.**
 3.4. Log a "SpecApproved" event in `noderr/noderr_log.md` for each approved spec.
 
+**Step 3.5: (Optional) Specification Verification Checkpoint**
+*This step is triggered based on Change Set size and complexity:*
+- **Automatic for Large Change Sets**: If the WorkGroupID contains ≥10 NodeIDs, the agent will recommend using `NDv1.9__Spec_Verification_Checkpoint.md`
+- **Suggested for Complex Changes**: For 5-9 NodeIDs with modifications to existing components
+- **Purpose**: Verify all specifications are complete, consistent, and ready for implementation
+- **Process**:
+  - Orchestrator runs the verification checkpoint prompt
+  - Agent performs READ-ONLY verification of all specs in the WorkGroupID
+  - Reports any missing specs, placeholders, or quality issues
+  - If issues found, return to Step 3.1 to fix before proceeding
+- **Outcome**: Ensures implementation has clean, complete specifications
+
 **Step 4: ARC-Principle-Based Planning & Pre-Implementation Commit**
 4.1. Develop a detailed internal implementation plan for the entire `WorkGroupID`.
 4.2. If the Change Set is complex or high-risk, present a concise plan outline to the Orchestrator for confirmation.
@@ -102,12 +114,29 @@ The Orchestrator will initiate this loop by providing you with a `PrimaryGoal`.
 **Step 5: Implementation**
 *   Execute your internal plan. Write and/or modify the necessary code and files for **all nodes in the `WorkGroupID`**.
 
-**Step 6: ARC-Based Verification**
+**Step 6A: Implementation & Initial Verification**
 *   Systematically verify the implemented work for the **entire Change Set**.
 *   **Verification Cycle:** This is the critical "fix and re-verify" loop.
     *   If any verification check (static analysis, build, tests, or ARC criteria) fails, you **must** return to Step 5 (Implementation) to diagnose and apply a fix.
-    *   After applying any fix, you **must** restart this entire verification step (Step 6) from the beginning to ensure no new issues or regressions were introduced.
-    *   This cycle continues until a 100% successful pass of all verification checks is achieved. This step is not considered complete until that successful pass occurs.
+    *   After applying any fix, you **must** restart this entire verification step (Step 6A) from the beginning to ensure no new issues or regressions were introduced.
+    *   This cycle continues until you believe you have achieved a successful implementation.
+*   **Note:** You may report "implementation complete" when your tests pass, but actual completeness will be verified in Step 6B.
+
+**Step 6B: Implementation Completeness Audit**
+*This step is triggered after Step 6A reports completion:*
+- **Purpose**: Perform an independent, READ-ONLY audit to verify what percentage of specifications were actually implemented
+- **Trigger**: Orchestrator runs `NDv1.9__[LOOP_2B]__Verify_Implementation.md` after Loop 2A claims completion
+- **Process**:
+  - Agent performs systematic audit of all NodeIDs in WorkGroupID
+  - Compares implementation against specifications
+  - Calculates objective completion percentage
+  - Reports gaps, orphan code, and risk assessment
+- **Outcomes**: Orchestrator decides whether to:
+  - Return to Step 5 to complete missing requirements
+  - Accept current implementation and proceed to Step 7
+  - Modify specs to match implementation
+  - Cancel the WorkGroupID
+- **Critical**: This prevents premature "done" claims and ensures true implementation completeness
 
 ---
 ### **Atomic Finalization Loop**
@@ -139,15 +168,22 @@ _Once all implementation and verification for the entire Change Set is complete,
     - **Unforeseen Ripple Effects:** [NodeIDs (outside of this WorkGroupID) whose specs may now need review: None | List affected nodes and reason].
     - **Specification Finalization:** All specs for the listed NodeIDs updated to "as-built" state.
     - **Flowchart Consistency Check Outcome:** [State outcome from Step 8].
+    - **Project Overview Updates:** [None | List sections updated in noderr_project.md].
     ---
     ```
 
-**Step 10: Update Tracker, Schedule Debt, & Final Commit**
+**Step 10: Update Tracker, Schedule Debt, & Project Overview**
 10.1. **Update Tracker**: For **EACH** `NodeID` in the active `WorkGroupID`:
     *   Change its `Status` from `[WIP]` to `[VERIFIED]`.
     *   Clear its `WorkGroupID` value.
 10.2. **Technical Debt Scheduling**: After marking a node `[VERIFIED]`, review its finalized spec. If significant technical debt was documented, create a new `REFACTOR_[NodeID]` task in `noderr_tracker.md`.
-10.3. **Final Implementation Commit**: **Commit all changes** (code, finalized specs, updated tracker, log, etc.) to version control. The commit message should be descriptive, e.g., `feat: Implement and verify WorkGroupID <ID> for [PrimaryGoal]`.
+10.3. **Project Overview Check**: Review if this Change Set impacts `noderr_project.md`:
+    *   **New Features**: If a major feature was added, update "Key Features" section
+    *   **Tech Stack Changes**: If new libraries/tools were added, update "Technology Stack" table
+    *   **Architecture Evolution**: If patterns changed, update "Architecture Decisions"
+    *   **Scope Expansion**: If scope grew, update "Scope & Key Features"
+    *   Only update if changes are significant enough to affect project-level documentation
+10.4. **Final Implementation Commit**: **Commit all changes** (code, finalized specs, updated tracker, log, and project overview if updated) to version control. The commit message should be descriptive, e.g., `feat: Implement and verify WorkGroupID <ID> for [PrimaryGoal]`.
 
 ---
 
@@ -180,6 +216,11 @@ _Once all implementation and verification for the entire Change Set is complete,
 You **MUST** pause and await explicit instructions at these points:
 *   After proposing a "Change Set" (Step 1.3).
 *   After presenting specs for approval (Step 3.3).
+*   When verification checkpoint is recommended for large Change Sets (Step 3.5).
 *   After presenting a plan for a complex Change Set (Step 4.2).
+*   After reporting implementation complete (Step 6A) - awaiting Loop 2B audit.
+*   After Loop 2B audit - awaiting decision on gaps (Step 6B).
 *   If you encounter a critical, unresolvable issue.
 *   If a flowchart discrepancy is too complex to fix autonomously (Step 8.2).
+
+---
