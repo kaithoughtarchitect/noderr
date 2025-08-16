@@ -38,6 +38,7 @@ These are the commands you'll use to manage the project's lifecycle.
 | :--- | :--- | :--- |
 | **Setup** | `noderr/prompts/NDv1.9__Install_And_Reconcile.md` | Once, after initial build and ZIP extraction |
 | **Session** | `noderr/prompts/NDv1.9__Start_Work_Session.md` | At the beginning of every work session to sync the agent. |
+| **Session** | `noderr/prompts/NDv1.9__Resume_Active_Loop.md` | If a work session was interrupted, to reconstruct context and resume. |
 | **Quality** | `noderr/prompts/NDv1.9__Spec_Verification_Checkpoint.md`| Before Loop 2A, to verify specs for large (10+ node) Change Sets. |
 | **Quick Fix** | `noderr/prompts/NDv1.9__Execute_Micro_Fix.md` | For tiny, localized fixes (< 50 lines) that don't require the full loop. |
 | **Bugs** | `noderr/prompts/NDv1.9__Handle_Critical_Issue.md` | When something is broken. Guides a formal triage and diagnosis process. |
@@ -78,6 +79,7 @@ These prompts are for setting up and verifying projects, or for performing deep 
 *   **Starting a new project?** → `noderr/prompts/Strategic_Blueprint_Designer` → Create project files → Build → Install
 *   **Just built initial prototype?** → Extract ZIP → `noderr/prompts/Install_And_Reconcile`
 *   **Starting your work day?** → `noderr/prompts/Start_Work_Session`
+*   **Resuming interrupted work?** → `noderr/prompts/NDv1.9__Resume_Active_Loop.md`
 *   **Large Change Set (10+ NodeIDs)?** → Run `Spec_Verification_Checkpoint` after Loop 1B.
 *   **Finished with Loop 2A?** → Always run `[LOOP_2B]__Verify_Implementation` audit.
 *   **Have a new feature idea?** → `noderr/prompts/Pre_Flight_Feature_Analysis` → (then start the loop).
