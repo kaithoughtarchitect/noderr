@@ -249,10 +249,10 @@ The tracker dashboard shows exactly what's done, what's in progress, and what's 
 
 ## The Noderr Loop
 
-Every feature follows this systematic 4-step process:
+Every feature follows this systematic, verification-driven process:
 
 **Step 1A: Impact Analysis**
-→ Use prompt: `noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md`
+→ Use prompt: `noderr/prompts/NDv1.9__[LOOP_1A]__Propose_Change_Set.md`
 ```
 You: "Add password reset"
 AI: "This requires changing:
@@ -262,22 +262,28 @@ AI: "This requires changing:
 ```
 
 **Step 1B: Draft Specs**
-→ Use prompt: `noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md`
-- AI marks NodeIDs as Work-In-Progress (WIP)
-- Creates detailed blueprints for every affected NodeID
-- You review the specifications
+→ Use prompt: `noderr/prompts/NDv1.9__[LOOP_1B]__Draft_Specs.md`
+- AI marks NodeIDs as Work-In-Progress (WIP).
+- Creates detailed blueprints for every affected NodeID.
+- You review the specifications.
+- **Note:** For large changes (≥10 NodeIDs), a **Spec Verification Checkpoint** is run here to ensure quality before implementation.
 
-**Step 2: Implement Change Set**
-→ Use prompt: `noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md`
-- AI builds ALL NodeIDs in the Change Set together
-- Runs tests and verification
-- Ensures quality gates are met
+**Step 2A: Implement Change Set**
+→ Use prompt: `noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md`
+- AI builds ALL NodeIDs in the Change Set together.
+- Runs tests and initial verification.
+
+**Step 2B: Verify Implementation Completeness**
+→ Use prompt: `noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md`
+- A READ-ONLY audit verifies the implementation against the specs.
+- Reports a true completion percentage (e.g., "85% of requirements met").
+- This prevents "done" claims when work is incomplete.
 
 **Step 3: Finalize & Commit**
-→ Use prompt: `noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md`
-- Updates all specs to match what was built
-- Logs decisions and discoveries
-- Creates a clean git commit
+→ Use prompt: `noderr/prompts/NDv1.9__[LOOP_3]__Finalize_And_Commit.md`
+- Updates all specs to match what was actually built.
+- Logs decisions and discoveries.
+- Creates a clean git commit.
 
 ---
 
@@ -333,7 +339,7 @@ function Settings() { ... }  // New component, doesn't connect
 **With Noderr:**
 ```javascript
 // Monday: "Add user profile"
-// You: Use prompt "ND__[LOOP_1A]__Propose_Change_Set.md"
+// You: Use prompt "NDv1.9__[LOOP_1A]__Propose_Change_Set.md"
 // AI: "Creating UI_UserProfile (NodeID), updating UI_Navigation to include 
 //      profile link, adding API_GetProfile endpoint. All connected in architecture."
 
@@ -360,11 +366,12 @@ The AI cannot function without `noderr/environment_context.md` being configured.
 ### The Prompts System
 You don't just chat with the AI. You use specific prompt files to trigger each phase:
 ```
-noderr/prompts/ND__Start_Work_Session.md         → Begin work
-noderr/prompts/ND__[LOOP_1A]__Propose_Change_Set.md → Start a feature
-noderr/prompts/ND__[LOOP_1B]__Draft_Specs.md    → Review specs
-noderr/prompts/ND__[LOOP_2]__Implement_Change_Set.md → Build it
-noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md → Finish up
+noderr/prompts/NDv1.9__Start_Work_Session.md         → Begin work
+noderr/prompts/NDv1.9__[LOOP_1A]__Propose_Change_Set.md → Start a feature
+noderr/prompts/NDv1.9__[LOOP_1B]__Draft_Specs.md    → Review specs
+noderr/prompts/NDv1.9__[LOOP_2A]__Implement_Change_Set.md → Build it
+noderr/prompts/NDv1.9__[LOOP_2B]__Verify_Implementation.md → Audit it
+noderr/prompts/NDv1.9__[LOOP_3]__Finalize_And_Commit.md → Finish up
 ```
 
 ### ARC Verification
@@ -374,6 +381,11 @@ noderr/prompts/ND__[LOOP_3]__Finalize_And_Commit.md → Finish up
 - Performance is acceptable
 - Error handling is robust
 - Documentation matches reality
+
+### 🔍 Quality Gates - Trust But Verify
+Noderr doesn't just trust the AI to get it right. It enforces two key quality gates:
+1.  **Specification Verification (Pre-Implementation):** For large changes (10+ NodeIDs), an automated check ensures all specifications are complete and logical *before* a single line of code is written. This prevents building on a flawed foundation.
+2.  **Implementation Audit (Post-Implementation):** After the AI reports "done", a mandatory, read-only audit (Loop 2B) compares the code against the specs. It provides a true completion percentage, catching gaps and preventing incomplete features from being marked as finished.
 
 ---
 
