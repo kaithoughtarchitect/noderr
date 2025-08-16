@@ -296,7 +296,7 @@ Unlike traditional tools, Noderr is installed AFTER you build your initial proto
 ### Quick Install
 1. **Prepare your vision** (blueprint, project overview, architecture)
 2. **Build initial prototype** with AI based on those plans
-3. **Download & add Noderr** - [Get noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/download/v1.9.0/noderr.starter.zip)
+3. **Download & add Noderr** - [Get noderr-starter.zip](https://github.com/kaithoughtarchitect/noderr/releases/download/v1.9.1/noderr.starter.zip)
 4. **Run Install prompt** - `noderr/prompts/ND__Install_And_Reconcile.md`
 5. **Run System Audit** - `noderr/prompts/ND__Post_Installation_Audit.md`
 
