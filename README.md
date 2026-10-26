@@ -2,6 +2,8 @@
 
 Your AI already knows how to code. Noderr teaches it how to engineer.
 
+> **Noderr has a successor: [Topping Out](https://github.com/kaithoughtarchitect/toppingout).** Everything Noderr taught me went into it: a foreman that plans and never writes code, a cheaper model that builds, reviewers from another model family, and fresh sessions per job so long runs don't drift. Noderr stays here as it is.
+
 ---
 
 ## Documentation
